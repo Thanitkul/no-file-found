@@ -13,5 +13,5 @@
 ### Use Case Diagram
 https://drive.google.com/file/d/1nhX6hlvAjrb4T5xHnXHwGZxgRlIL8K0z/view?usp=sharing
 
-![image](https://github.com/Thanitkul/no-file-found/assets/55860480/3d17849a-e532-4b35-a4d8-82b4f014286f)
+<img width="626" alt="image" src="https://github.com/Thanitkul/no-file-found/assets/55860480/bc1c236d-c79a-48b5-a481-42fb3d3e3332">
 
