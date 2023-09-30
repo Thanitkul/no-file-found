@@ -9,12 +9,9 @@
 4. Kasidis Manasurangkul (Mo)
 
 ## Project: File Finder Tool
+Run:
+```
+python -m app
+```
 
-### Use Case Diagram
-https://drive.google.com/file/d/1nhX6hlvAjrb4T5xHnXHwGZxgRlIL8K0z/view?usp=sharing
-
-<img width="626" alt="image" src="https://github.com/Thanitkul/no-file-found/assets/55860480/bc1c236d-c79a-48b5-a481-42fb3d3e3332">
-
-### Use Case Narrative
-https://docs.google.com/document/d/1-uAV5Lz5dEIpFQE0reUqR6KlIxCngX4AECGVIre67_M/edit?usp=sharing
 
