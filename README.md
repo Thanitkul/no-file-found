@@ -14,7 +14,4 @@ Run:
 ```
 python -m app
 ```
-<<<<<<< HEAD
-=======
 Team B sucks
->>>>>>> lab6
