@@ -1,4 +1,4 @@
-Team A edited here
+teamB edited here
 # no-file-found
 
 ## Team name: no-file-found
@@ -14,5 +14,3 @@ Run:
 ```
 python -m app
 ```
-
-teamB edited here
