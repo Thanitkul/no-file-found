@@ -14,3 +14,4 @@ Run:
 ```
 python -m app
 ```
+Team B sucks
