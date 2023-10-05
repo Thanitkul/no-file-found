@@ -14,4 +14,7 @@ Run:
 ```
 python -m app
 ```
-pooh was here (teamb) hi sally
+<<<<<<< HEAD
+=======
+Team B sucks
+>>>>>>> lab6
