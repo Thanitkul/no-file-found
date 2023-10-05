@@ -1,0 +1,23 @@
+﻿File Tool Comments
+
+
+2023-09-14:  Use case diagram and narratives in the ReadMe, I asked them to change.
+2023-09-21: What do you mean by “keyword” in the use case analysis?
+
+Not all use cases have narratives.
+
+Functional flow very close to use cases, but that seems reasonable given your application.
+2023-09-28: Why do you have two copies of your architecture diagram? Are they the same? Also there is no module table.
+2023-10-04: What is the content in the .idea subdirectory? Is this derived content or source?
+
+Good coding standards but you have an example that violates your standards (source file names must be all lower case).
+
+Good that you continue to refine your architecture understanding.
+
+Have you created empty py files as placeholders? It would have been better to at least put a header comment in each one.
+
+Good that your source structure mirrors your architecture.
+
+Good use of GitHub issues to manage tasks.
+
+
