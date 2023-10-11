@@ -1,16 +1,15 @@
 '''
 __main__.py
 
-Gather all the widgets together and run the application.
+Gather all the components together and run the application.
 
 Created by Mo, 30 September, 2023.
 '''
+import sys
 from qtpy.QtWidgets import QApplication, QWidget, QVBoxLayout
 
 from .file_explorer.tree_list_generator import TreeListGenerator
 from .file_explorer.file_search_engine import FileSearchEngine
-
-import sys
 
 class FileTreeViewer(QWidget):
     def __init__(self):
@@ -19,12 +18,12 @@ class FileTreeViewer(QWidget):
         self.setWindowTitle("File Tree Viewer")
         self.setGeometry(100, 100, 800, 600)
 
-        self.tree_list_generator = TreeListGenerator()
-        self.file_search_engine = FileSearchEngine()
+        self.treeListGenerator = TreeListGenerator()
+        self.fileSearchEngine = FileSearchEngine()
 
-        central_layout = QVBoxLayout(self)
-        central_layout.addWidget(self.file_search_engine.search_bar)
-        central_layout.addWidget(self.tree_list_generator.splitter)
+        centralLayout = QVBoxLayout(self)
+        centralLayout.addWidget(self.fileSearchEngine.searchBar)
+        centralLayout.addWidget(self.treeListGenerator.splitter)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

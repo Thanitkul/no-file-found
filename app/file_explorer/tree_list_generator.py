@@ -12,7 +12,7 @@ from qtpy.QtCore import Qt
 
 class TreeListGenerator(QMainWindow):
     def __init__(self):
-        super().__init()
+        super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
 
         self.addFileTreeList(self.splitter, '')
