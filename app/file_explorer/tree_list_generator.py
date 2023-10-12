@@ -39,7 +39,7 @@ class TreeListGenerator(QMainWindow):
 
         self.treeView.setHeaderHidden(True)  # Optional: Hide header columns
         self.treeView.setColumnWidth(0, 250)  # Optional: Set the column width
-        self.treeView.setColumnWidth(0, self.treeView.columnWidth(0) / 2)
+        # self.treeView.setColumnWidth(0, self.treeView.columnWidth(0) / 2)
 
         # Add the new file tree list to the splitter
         splitter.addWidget(self.treeView)
