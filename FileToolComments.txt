@@ -20,4 +20,9 @@ Good that your source structure mirrors your architecture.
 
 Good use of GitHub issues to manage tasks.
 
+2023-10-12: GREAT lab report from last week. You really thought about this, and used the learning to draw conclusions about what your team should do. This is what I’d hoped people would get from the exercise.
+
+No new code development.
+
+
 
