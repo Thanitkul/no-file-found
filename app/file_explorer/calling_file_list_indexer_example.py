@@ -9,7 +9,10 @@ Created by Phasit Thanitkul (Kane), 11 October 2023
 
 # import ctypes and .so library
 from ctypes import *
+# open the file_list_indexer.so library from cwd + ../os/file_list_indexer.so
+
 file_list_indexer = CDLL("../os/file_list_indexer.so")
+
 
 # you have to specify the return type of the function
 # in this case, it is a c_char_p (string)
@@ -36,3 +39,27 @@ import json
 fileList = json.loads(fileList)
 print("File list converted to python dictionary:")
 print(fileList, "\n")
+
+#call the function FileSearcher from file_list_indexer.so
+
+# you have to specify the return type of the function
+# in this case, it is a c_char_p (string)
+file_list_indexer.FileSearcher.restype = c_char_p
+
+
+searchResult = file_list_indexer.FileSearcher(b"..", b"c?lling_[c-g][a-r]le_*")
+print("Search result returned from file_list_indexer.so library:")
+print(searchResult, "\n")
+
+#convert to python string
+searchResult = searchResult.decode("utf-8")
+print("Search result converted to python string:")
+print(searchResult, "\n")
+
+#convert to python dictionary
+searchResult = json.loads(searchResult)
+print("Search result converted to python dictionary:")
+print(searchResult, "\n")
+
+
+
