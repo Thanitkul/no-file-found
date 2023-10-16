@@ -11,7 +11,7 @@ Created by Phasit Thanitkul (Kane), 11 October 2023
 from ctypes import *
 # open the file_list_indexer.so library from cwd + ../os/file_list_indexer.so
 
-file_list_indexer = CDLL("../os/file_list_indexer.so")
+file_list_indexer = CDLL("./app/os/file_list_indexer.so")
 
 
 # you have to specify the return type of the function
