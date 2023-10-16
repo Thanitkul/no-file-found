@@ -3,6 +3,8 @@ calling_file_list_indexer_example.py
 
 This file is an example of how to call the file_list_indexer.so library.
 
+recompile by "cc -fPIC -shared -o file_list_indexer.so file_list_indexer.c"
+
 Created by Phasit Thanitkul (Kane), 11 October 2023
 
 '''
