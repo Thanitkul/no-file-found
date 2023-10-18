@@ -1,0 +1,24 @@
+Objective ,Test Case name,Test Case scenario,Test data,Expected results,Observation/issue,Comment
+View file in tree-list structure,Display tree-list,Open the program,/',System displays the root directory and its subfolders,,
+,Open a folder,Click on a folder,/boot' ,Expand a new tree-list in that clicked folder,,
+,Open an empty folder,Click on an empty folder,empty folder' ,System displays that there is no file or sub folder in an expanded tree-list,,
+,Change folder,Click a folder in previous tree-list,dev',Collapse all tree-lists on the right side of the selected folder and expand a new tree-list in that clicked folder,,
+,Close recent folder,Click a back arrow button,,Collapse the most recently expanded tree-list,,
+View file attribute,Select a file,Click on a file,test.png,System displays container which contain last modified date and file size next to current tree list,,
+,change selected file,Click on another file,category.pdf,System replace previous selected file's last modified date and file size with the current selected file's,,
+,stop selecting file,click on selected file again ,-,System collapse the container,,
+View search history,Empty Search History,"Click the search history
+while its empty",-,System displays a warning message,,
+,View Search History,"Click the search history
+after searching for files",Test search,"System lists the searches made in the 
+current session",,
+,Export Search History,"Click the export button
+in search history",-,System exports the search history as a CSV,,
+Search for files,Empty search term,"Click the search without
+any keyword",,System warns that the search key is empty,,
+,Searching with wildcard,"User enters a search
+keyword followed by a 
+wildcard",homework*,"System lists all the files that has the name
+starting with keyword followed by another word",,
+,Searching without wildcard,"User enters a search
+without a wildcard",CodingStandards.pdf,System lists all the files with exact match,,
