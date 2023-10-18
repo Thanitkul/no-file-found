@@ -247,6 +247,7 @@ char *FileSearcher(const char *path, const char *searchString)
 
     // delete the last comma and end the string with ]
     result[strlen(result) - 2] = '\0';
+
     result = realloc(result, (strlen(result) + 2) * sizeof(char));
     strcat(result, "]");
 

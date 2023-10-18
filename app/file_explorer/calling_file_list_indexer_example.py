@@ -49,7 +49,7 @@ print(fileList, "\n")
 file_list_indexer.FileSearcher.restype = c_char_p
 
 
-searchResult = file_list_indexer.FileSearcher(b"../../..", b"calling_file*.py")
+searchResult = file_list_indexer.FileSearcher(b"../../..", b"calling_file")
 print("Search result returned from file_list_indexer.so library:")
 print(searchResult, "\n")
 
