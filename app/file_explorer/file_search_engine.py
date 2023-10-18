@@ -13,7 +13,7 @@ class FileSearchEngine:
     def search(self, current_path: str = "/home/pooh/"):
         querry = self.searchBar.text()
         # querry = "*.png"
-        search_results = self.file_list_indexer.FileSearcher(b"..", b"*.py")
+        search_results = self.file_list_indexer.FileSearcher(b"/home/pooh/code/", b".py")
         print(search_results)
         return json.loads(search_results.decode("utf-8"))
     
