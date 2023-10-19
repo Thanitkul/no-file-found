@@ -24,6 +24,7 @@ class FileTreeViewer(QWidget):
         centralLayout = QVBoxLayout(self)
         centralLayout.addWidget(self.fileSearchEngine.searchBar)
         centralLayout.addWidget(self.treeListGenerator.splitter)
+        centralLayout.addWidget(self.fileSearchEngine.tree_widget)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

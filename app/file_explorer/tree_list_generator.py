@@ -7,10 +7,10 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter
+from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QWidget
 from qtpy.QtCore import Qt
 
-class TreeListGenerator(QMainWindow):
+class TreeListGenerator(QWidget):
     def __init__(self):
         super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
@@ -45,3 +45,5 @@ class TreeListGenerator(QMainWindow):
         splitter.addWidget(self.treeView)
         # Connect the expanded signal to an event handler
         self.treeView.expanded.connect(self.folderOpened)
+
+    # def removeFileTreeList(self, splitter, startingPath)

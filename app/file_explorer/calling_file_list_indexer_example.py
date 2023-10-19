@@ -47,7 +47,7 @@ print(fileList, "\n")
 file_list_indexer.FileSearcher.restype = c_char_p
 
 
-searchResult = file_list_indexer.FileSearcher(b"..", b"c?lling_[c-g][a-r]le_*")
+searchResult = file_list_indexer.FileSearcher(b"..", b"__main__.py")
 print("Search result returned from file_list_indexer.so library:")
 print(searchResult, "\n")
 

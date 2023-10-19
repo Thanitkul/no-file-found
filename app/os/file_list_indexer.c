@@ -218,7 +218,7 @@ void searchFiles(const char *path, const char *searchString, char **result) {
             free(new_path);
         } else {
             // check if the file name matches the search string
-            if (matchesWildcard(searchString, entry->d_name) || strcasestr(entry->d_name, searchString) != NULL) {
+            if (matchesWildcard(searchString, entry->d_name) || strcasecmp(entry->d_name, searchString) == 0) {                
                 char *formatted = formatResult(path, entry->d_name);
                 if (formatted) {
                     *result = realloc(*result, (strlen(*result) + strlen(formatted) + 2) * sizeof(char));
