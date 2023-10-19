@@ -7,7 +7,7 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QTableWidgetItem, QTableWidget, QWidget, QVBoxLayout
+from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QTableWidgetItem, QTableWidget, QWidget, QVBoxLayout, QSizePolicy
 from qtpy.QtCore import Qt
 
 class TreeListGenerator(QMainWindow):
@@ -17,22 +17,21 @@ class TreeListGenerator(QMainWindow):
         self.initUI()
     
     def initUI(self):
-            # Create a container widget for the file attributes
-        self.attributeWidget = QWidget()
-        self.attributeLayout = QVBoxLayout(self.attributeWidget)
-
         # Create a table to display file attributes
         self.attributeTable = QTableWidget()
+        self.attributeTable.setFixedWidth(500)
         self.attributeTable.setColumnCount(2)
         self.attributeTable.setHorizontalHeaderLabels(['Attribute', 'Value'])
         self.attributeTable.horizontalHeader().setStretchLastSection(True)
+        # Set the vertical size policy to expanding
+        self.attributeTable.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding)
 
-        # Add the attributeTable to the attributeLayout
-        self.attributeLayout.addWidget(self.attributeTable)
+
 
         # Create the initial file tree list
         self.addFileTreeList(self.splitter, '', isInitial=True)
-        self.splitter.addWidget(self.attributeWidget)
+        self.splitter.addWidget(self.attributeTable)
 
         self.setCentralWidget(self.splitter)
 
