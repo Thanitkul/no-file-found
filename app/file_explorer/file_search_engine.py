@@ -54,12 +54,13 @@ class FileSearchEngine(QMainWindow):
     def search(self, current_path: str = "/home/pooh/"):
         querry = self.searchBar.text()
         # querry = "*.png"
-        # search_results = self.file_list_indexer.FileSearcher(b"..", b"*.py")
-        # print(search_results)
-        # return json.loads(search_results.decode("utf-8"))
+        search_results = self.file_list_indexer.FileSearcher(b"..", b"__main__.py")
+        print(search_results)
+        return json.loads(search_results.decode("utf-8"))
     
     def search_folders(self):
         print("i been ran")
+        # self.search()
         search_path = self.searchBar.text()
         parent_path = self.windowFilePath()
         print(parent_path)

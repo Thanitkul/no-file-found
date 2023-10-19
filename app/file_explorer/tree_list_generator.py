@@ -20,6 +20,7 @@ class TreeListGenerator(QWidget):
     def folderOpened(self, index):
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
+    
         
         # Create a splitter to divide the window into parts for each tree view
 

@@ -218,7 +218,7 @@ void searchFiles(const char *path, const char *searchString, char **result) {
             free(new_path);
         } else {
             // check if the file name matches the search string
-            if (matchesWildcard(searchString, entry->d_name) || strcasecmp(entry->d_name, searchString) == 0) {                
+            if (matchesWildcard(searchString, entry->d_name) || strcasestr(entry->d_name, searchString) != NULL) {
                 char *formatted = formatResult(path, entry->d_name);
                 if (formatted) {
                     *result = realloc(*result, (strlen(*result) + strlen(formatted) + 2) * sizeof(char));
@@ -247,6 +247,7 @@ char *FileSearcher(const char *path, const char *searchString)
 
     // delete the last comma and end the string with ]
     result[strlen(result) - 2] = '\0';
+
     result = realloc(result, (strlen(result) + 2) * sizeof(char));
     strcat(result, "]");
 
