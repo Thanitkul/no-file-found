@@ -10,12 +10,19 @@ Created by Mo, 12 October, 2023.
 from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QTableWidgetItem, QTableWidget, QSizePolicy
 from qtpy.QtCore import Qt
 
+from .file_attribute_view import FileAttributeView
+
 class TreeListGenerator(QMainWindow):
     def __init__(self):
         super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
         self.initUI()
     
+    '''
+    Initialize attribute table and first tree list
+    Arguments:
+        None
+    '''
     def initUI(self):
         # Create a table to display file attributes
         self.displayingFile = None
@@ -24,25 +31,17 @@ class TreeListGenerator(QMainWindow):
         self.attributeTable.setColumnCount(2)
         self.attributeTable.setHorizontalHeaderLabels(['Attribute', 'Value'])
         self.attributeTable.horizontalHeader().setStretchLastSection(True)
-        # Set the vertical size policy to expanding
-        self.attributeTable.setSizePolicy(
-            QSizePolicy.Expanding, QSizePolicy.Expanding)
-
-
 
         # Create the initial file tree list
         self.addFileTreeList(self.splitter, '')
         
-
+        # Set the splitter as the central widget
         self.setCentralWidget(self.splitter)
 
     def folderOpened(self, index):
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
-        
-        # Create a splitter to divide the window into parts for each tree view
-
-        # Create the initial file tree list
+    
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
 
