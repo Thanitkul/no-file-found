@@ -1,28 +1,31 @@
 '''
 tree_list_generator.py
 
-Display file tree list, starting from root and 
-when clicking open folder, a new file tree list which 
+Display file tree list, starting from root and
+when clicking open folder, a new file tree list which
 contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QTableWidgetItem, QTableWidget, QSizePolicy
+from qtpy.QtWidgets import (QMainWindow, QTreeView,
+                            QFileSystemModel, QSplitter,
+                            QTableWidgetItem, QTableWidget)
 from qtpy.QtCore import Qt
 
-from .file_attribute_view import FileAttributeView
 
 class TreeListGenerator(QMainWindow):
+
     def __init__(self):
         super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
         self.initUI()
-    
+
     '''
     Initialize attribute table and first tree list
     Arguments:
         None
     '''
+
     def initUI(self):
         # Create a table to display file attributes
         self.displayingFile = None
@@ -34,14 +37,14 @@ class TreeListGenerator(QMainWindow):
 
         # Create the initial file tree list
         self.addFileTreeList(self.splitter, '')
-        
+
         # Set the splitter as the central widget
         self.setCentralWidget(self.splitter)
 
     def folderOpened(self, index):
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
-    
+
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
 
@@ -57,8 +60,8 @@ class TreeListGenerator(QMainWindow):
         self.treeView.hideColumn(2)
         self.treeView.hideColumn(3)
 
-        self.treeView.setRootIndex(self.model.index(startingPath))  # Set the root path
-
+        # Set the root path
+        self.treeView.setRootIndex(self.model.index(startingPath))
 
         self.treeView.setHeaderHidden(True)  # Optional: Hide header columns
         self.treeView.setColumnWidth(0, 250)  # Optional: Set the column width
@@ -82,11 +85,12 @@ class TreeListGenerator(QMainWindow):
         if filePath == self.displayingFile:
 
             # Assuming splitter is your QSplitter instance
-            latestWidget = self.splitter.widget(self.splitter.count() - 1)  # Get the latest widget
+            latestWidget = self.splitter.widget(
+                self.splitter.count() - 1)  # Get the latest widget
             # Remove the latest widget
             self.splitter.replaceWidget(self.splitter.count(), None)
             latestWidget.deleteLater()  # Delete the widget to release its resources
-            
+
         else:
             # Get and display file attributes
             attributes = {

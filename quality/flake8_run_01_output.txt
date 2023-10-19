@@ -1,0 +1,14 @@
+app/file_explorer/tree_list_generator.py:4:47: W291 trailing whitespace
+app/file_explorer/tree_list_generator.py:5:54: W291 trailing whitespace
+app/file_explorer/tree_list_generator.py:10:1: F401 'qtpy.QtWidgets.QSizePolicy' imported but unused
+app/file_explorer/tree_list_generator.py:10:80: E501 line too long (123 > 79 characters)
+app/file_explorer/tree_list_generator.py:13:1: F401 '.file_attribute_view.FileAttributeView' imported but unused
+app/file_explorer/tree_list_generator.py:15:1: E302 expected 2 blank lines, found 1
+app/file_explorer/tree_list_generator.py:20:1: W293 blank line contains whitespace
+app/file_explorer/tree_list_generator.py:37:1: W293 blank line contains whitespace
+app/file_explorer/tree_list_generator.py:44:1: W293 blank line contains whitespace
+app/file_explorer/tree_list_generator.py:60:80: E501 line too long (87 > 79 characters)
+app/file_explorer/tree_list_generator.py:63:9: E303 too many blank lines (2)
+app/file_explorer/tree_list_generator.py:85:80: E501 line too long (99 > 79 characters)
+app/file_explorer/tree_list_generator.py:88:80: E501 line too long (84 > 79 characters)
+app/file_explorer/tree_list_generator.py:89:1: W293 blank line contains whitespace
