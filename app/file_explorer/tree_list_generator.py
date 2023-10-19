@@ -7,7 +7,7 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QTableWidgetItem, QTableWidget, QWidget, QVBoxLayout, QSizePolicy
+from qtpy.QtWidgets import QMainWindow, QTreeView, QFileSystemModel, QSplitter, QTableWidgetItem, QTableWidget, QSizePolicy
 from qtpy.QtCore import Qt
 
 class TreeListGenerator(QMainWindow):
@@ -18,6 +18,7 @@ class TreeListGenerator(QMainWindow):
     
     def initUI(self):
         # Create a table to display file attributes
+        self.displayingFile = None
         self.attributeTable = QTableWidget()
         self.attributeTable.setFixedWidth(500)
         self.attributeTable.setColumnCount(2)
@@ -30,8 +31,8 @@ class TreeListGenerator(QMainWindow):
 
 
         # Create the initial file tree list
-        self.addFileTreeList(self.splitter, '', isInitial=True)
-        self.splitter.addWidget(self.attributeTable)
+        self.addFileTreeList(self.splitter, '')
+        
 
         self.setCentralWidget(self.splitter)
 
@@ -45,7 +46,7 @@ class TreeListGenerator(QMainWindow):
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
 
-    def addFileTreeList(self, splitter, startingPath, isInitial=False):
+    def addFileTreeList(self, splitter, startingPath):
         # Create a new file tree list
         self.treeView = QTreeView(self)
         self.treeView.setFixedWidth(250)
@@ -65,10 +66,7 @@ class TreeListGenerator(QMainWindow):
         # self.treeView.setColumnWidth(0, self.treeView.columnWidth(0) / 2)
 
         # Add the new file tree list to the splitter
-        if isInitial:
-            splitter.addWidget(self.treeView)
-        else:
-            self.splitter.insertWidget(self.splitter.count() - 1, self.treeView)
+        splitter.addWidget(self.treeView)
         # Connect the expanded signal to an event handler
         self.treeView.expanded.connect(self.folderOpened)
         self.treeView.clicked.connect(self.fileClicked)
@@ -82,16 +80,24 @@ class TreeListGenerator(QMainWindow):
     def fileSelected(self, index):
         # Event handler for displaying file attributes
         filePath = self.model.filePath(index)
+        if filePath == self.displayingFile:
 
-        # Get and display file attributes
-        attributes = {
-            'File Name': filePath.split('/')[-1],
-            'Last Modified': self.model.lastModified(index).toString(),
-            'File Size': f"{self.model.size(index) / 1024:.2f} KB"
-        }
-        print(attributes)
-
-        self.updateAttributeTable(attributes)
+            # Assuming splitter is your QSplitter instance
+            latestWidget = self.splitter.widget(self.splitter.count() - 1)  # Get the latest widget
+            # Remove the latest widget
+            self.splitter.replaceWidget(self.splitter.count(), None)
+            latestWidget.deleteLater()  # Delete the widget to release its resources
+            
+        else:
+            # Get and display file attributes
+            attributes = {
+                'File Name': filePath.split('/')[-1],
+                'Last Modified': self.model.lastModified(index).toString(),
+                'File Size': f"{self.model.size(index) / 1024:.2f} KB"
+            }
+            print(attributes)
+            self.displayingFile = filePath
+            self.updateAttributeTable(attributes)
 
     def updateAttributeTable(self, attributes):
         # Clear the existing attribute table
@@ -105,3 +111,4 @@ class TreeListGenerator(QMainWindow):
             self.attributeTable.setItem(rowPosition, 0, QTableWidgetItem(key))
             self.attributeTable.setItem(
                 rowPosition, 1, QTableWidgetItem(value))
+        self.splitter.addWidget(self.attributeTable)
