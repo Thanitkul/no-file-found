@@ -10,7 +10,7 @@ from qtpy.QtWidgets import QApplication, QWidget, QVBoxLayout, QVBoxLayout, QScr
 
 from .file_explorer.tree_list_generator import TreeListGenerator
 from .file_explorer.file_search_engine import FileSearchEngine
-
+from .file_explorer.search_history_table import SearchHistoryTable
 
 
 class FileTreeViewer(QWidget):
@@ -22,11 +22,13 @@ class FileTreeViewer(QWidget):
 
         self.treeListGenerator = TreeListGenerator()
         self.fileSearchEngine = FileSearchEngine()
-
+        self.searchHistoryTable = SearchHistoryTable()
+    
         centralWidget = QWidget()
         centralLayout = QVBoxLayout(centralWidget)
         centralLayout.addWidget(self.fileSearchEngine.searchBar)
         centralLayout.addWidget(self.treeListGenerator.splitter)
+        centralLayout.addWidget(self.searchHistoryTable.historyButton)
 
         scrollArea = QScrollArea()
         scrollArea.setWidgetResizable(True)
