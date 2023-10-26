@@ -9,8 +9,12 @@ Created by Mo, 12 October, 2023.
 '''
 from qtpy.QtWidgets import (QMainWindow, QTreeView,
                             QFileSystemModel, QSplitter,
-                            QTableWidgetItem, QTableWidget)
+                            QTableWidgetItem, QTableWidget,
+                            QHBoxLayout, QPushButton
+                            )
+from qtpy.QtGui import QIcon
 from qtpy.QtCore import Qt
+import os
 
 
 class TreeListGenerator(QMainWindow):
@@ -18,6 +22,8 @@ class TreeListGenerator(QMainWindow):
     def __init__(self):
         super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
+        # Create a horizontal layout for the navigation bar
+        self.layout = QHBoxLayout()
         self.initUI()
 
     '''
@@ -40,6 +46,43 @@ class TreeListGenerator(QMainWindow):
 
         # Set the splitter as the central widget
         self.setCentralWidget(self.splitter)
+
+        # Create a back button
+        self.backButton()
+    
+    def backButton(self):
+        # Create a back button
+        self.backButton = QPushButton()
+
+        # Get the absolute path to the directory where your script is located
+        script_directory = os.path.dirname(os.path.abspath(__file__))
+
+        # Specify the relative path to your SVG image file
+        image_path = os.path.join(script_directory, "..",
+                                "assets", "icons", "back_button.svg")
+
+        # Create a QIcon using the image_path
+        icon = QIcon(image_path)
+        self.backButton.setIcon(icon)
+        # Set the size of the circular button
+        self.backButton.setFixedSize(30, 30)
+        self.backButton.setStyleSheet(
+            "QPushButton { border: none; border-radius: 15px; background-color: #ffffff; }"
+            "QPushButton:hover { background-color: #005A9D; }"
+        )
+        self.backButton.clicked.connect(self.goBack)
+
+        # Add the back button to the layout
+        self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
+
+        # Add some spacing to separate the back button from other elements
+        self.layout.addSpacing(10)
+
+        # Set the layout for the navigation bar
+        self.setLayout(self.layout)
+
+    def goBack(self):
+            pass
 
     def folderOpened(self, index):
         # Event handler for when a folder is opened (expanded)
