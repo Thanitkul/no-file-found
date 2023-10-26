@@ -86,4 +86,3 @@ def FileSearcher(starting_path: str, search_string: str) -> List[Dict[str, str]]
     return matches
 
 
-print(FileSearcher("../../..", "List"))
