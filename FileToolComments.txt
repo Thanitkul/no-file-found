@@ -30,5 +30,10 @@ You’re making good progress on the code as well. Commit comments are quite inf
 
 Is .so a shared library? If so, it should not be in the repository since it is a derived file, which will change if you modify the source file.
 
+2023-10-26: Did you get filenames mixed up? pylint_run_02 had more problems than pylint_run_01!   Very nice that you explored another tool as well. 
+
+Excellent code review report!
+
+Good to see active development in code (a commit 14 minutes ago!)
 
 
