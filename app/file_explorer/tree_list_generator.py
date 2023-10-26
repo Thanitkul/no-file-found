@@ -7,11 +7,8 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import (QMainWindow, QTreeView,
-                            QFileSystemModel, QSplitter,
-                            QTableWidgetItem, QTableWidget,
-                            QHBoxLayout, QPushButton
-                            )
+from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
+                            QTableWidgetItem, QTableWidget, QHBoxLayout, QPushButton)
 from qtpy.QtGui import QIcon
 from qtpy.QtCore import Qt
 import os
@@ -24,6 +21,7 @@ class TreeListGenerator(QMainWindow):
         self.splitter = QSplitter(Qt.Horizontal)
         # Create a horizontal layout for the navigation bar
         self.layout = QHBoxLayout()
+        self.treeViewList = []  # List to keep track of tree view
         self.initUI()
 
     '''
@@ -82,12 +80,20 @@ class TreeListGenerator(QMainWindow):
         self.setLayout(self.layout)
 
     def goBack(self):
-            pass
+        # Event handler for when the back button is clicked
+        # Remove the latest widget
+        if self.splitter.count() > 1:
+            self.splitter.replaceWidget(self.splitter.count() - 1, None)
+            # Delete the widget to release its resources
+            self.splitter.widget(self.splitter.count() - 1).deleteLater()
+            self.treeViewList.pop()
 
     def folderOpened(self, index):
+        self.treeViewList[len(self.treeViewList) - 1].collapse(index)
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
-
+        # Add the opened folder to the list of opened folders
+        self.treeViewList.append(self.treeView)
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
 
@@ -115,6 +121,8 @@ class TreeListGenerator(QMainWindow):
         # Connect the expanded signal to an event handler
         self.treeView.expanded.connect(self.folderOpened)
         self.treeView.clicked.connect(self.fileClicked)
+        
+        self.treeViewList.append(self.treeView)
 
     def fileClicked(self, index):
         # Event handler for when a file is clicked
