@@ -1,5 +1,5 @@
 '''
-file_list_indexer.py
+file_searcher.py
 
 FileSearcher: 
         This function search for files and their path in the root directory and its subdirectories given the starting path and search string. It can handle regular search and wilecard search(*, ?, [], !, -, #).
