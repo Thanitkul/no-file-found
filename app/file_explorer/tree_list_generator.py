@@ -16,9 +16,13 @@ from .file_attribute_view import FileAttributeView
 
 
 class NonExpandableTreeView(QTreeView):
-    def expand(self, index):
-        # Intercept the expand call and do nothing, effectively preventing expansion
-        pass
+
+    def __init__(self, parent=None):
+        super(NonExpandableTreeView, self).__init__(parent)
+        self.expanded.connect(self.collapseImmediately)
+
+    def collapseImmediately(self, index):
+        self.collapse(index)
     
 class TreeListGenerator(QMainWindow):
 
@@ -49,7 +53,7 @@ class TreeListGenerator(QMainWindow):
     
     def addFileTreeList(self, splitter, startingPath):
         # Create a new file tree list
-        self.treeView = QTreeView(self)
+        self.treeView = NonExpandableTreeView(self)
         self.treeView.setFixedWidth(250)
         self.model = QFileSystemModel()
         self.model.setRootPath(startingPath)
