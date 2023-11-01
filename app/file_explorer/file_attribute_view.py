@@ -24,13 +24,14 @@ class FileAttributeView(QMainWindow):
     def initUI(self):
         # Create a table to display file attributes
         self.displayingFile = None
+
+
+    def updateAttributeTable(self, attributes):
         self.attributeTable = QTableWidget()
         self.attributeTable.setFixedWidth(500)
         self.attributeTable.setColumnCount(2)
         self.attributeTable.setHorizontalHeaderLabels(['Attribute', 'Value'])
         self.attributeTable.horizontalHeader().setStretchLastSection(True)
-
-    def updateAttributeTable(self, attributes):
         # Clear the existing attribute table
         self.attributeTable.setRowCount(0)
 

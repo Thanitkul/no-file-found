@@ -92,13 +92,15 @@ class TreeListGenerator(QMainWindow):
         
         self.treeViewList.append(self.treeView)
 
-    def openFolder(self, index):
+    def openFolder(self, index): 
+        print(self.treeView in self.treeViewList)
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
         # Add the opened folder to the list of opened folders
         self.treeViewList.append(self.treeView)
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
+       
 
     def selectFile(self, index):
         if index.isValid() and not self.model.isDir(index):
@@ -110,7 +112,7 @@ class TreeListGenerator(QMainWindow):
                 latestWidget = self.splitter.widget(
                     self.splitter.count() - 1)  # Get the latest widget
                 # Remove the latest widget
-                self.splitter.replaceWidget(self.splitter.count(), None)
+                self.splitter.replaceWidget(self.splitter.count() - 1, None)
                 latestWidget.deleteLater()  # Delete the widget to release its resources
 
             else:
