@@ -20,9 +20,20 @@ class NonExpandableTreeView(QTreeView):
     def __init__(self, parent=None):
         super(NonExpandableTreeView, self).__init__(parent)
         self.expanded.connect(self.collapseImmediately)
-
+    
     def collapseImmediately(self, index):
         self.collapse(index)
+        
+    def mousePressEvent(self, event):
+        index = self.indexAt(event.pos())
+        if index.isValid() and self.model().hasChildren(index):
+            # If it's a folder, toggle expansion upon single click
+            if self.isExpanded(index):
+                self.collapse(index)
+            else:
+                self.expand(index)
+            return
+        super(NonExpandableTreeView, self).mousePressEvent(event)
     
 class TreeListGenerator(QMainWindow):
 
@@ -79,8 +90,6 @@ class TreeListGenerator(QMainWindow):
         self.treeViewList.append(self.treeView)
 
     def openFolder(self, index):
-        # self.treeViewList[- 1].collapse(index)
-        # self.treeView.collapse(index)
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
         # Add the opened folder to the list of opened folders
@@ -148,3 +157,8 @@ class TreeListGenerator(QMainWindow):
             # Delete the widget to release its resources
             self.splitter.widget(self.splitter.count() - 1).deleteLater()
             self.treeViewList.pop()
+
+    def highlightFolder(self, index):
+        item = self.treeView.indexWidget(index)
+        if item:
+            item.setStyleSheet("background-color: red;")
