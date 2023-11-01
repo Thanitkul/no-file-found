@@ -42,4 +42,4 @@ class FileAttributeView(QMainWindow):
             self.attributeTable.setItem(rowPosition, 0, QTableWidgetItem(key))
             self.attributeTable.setItem(
                 rowPosition, 1, QTableWidgetItem(value))
-        self.splitter.addWidget(self.attributeTable)
+        
