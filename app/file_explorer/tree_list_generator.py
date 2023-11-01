@@ -73,6 +73,9 @@ class TreeListGenerator(QMainWindow):
         self.treeView.hideColumn(1)
         self.treeView.hideColumn(2)
         self.treeView.hideColumn(3)
+        # Disable scroll bars for the tree view
+        self.treeView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.treeView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         # Set the root path
         self.treeView.setRootIndex(self.model.index(startingPath))
