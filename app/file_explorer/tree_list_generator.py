@@ -9,7 +9,7 @@ Created by Mo, 12 October, 2023.
 '''
 from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
                             QHBoxLayout, QPushButton)
-from qtpy.QtGui import QIcon
+from qtpy.QtGui import QIcon, QBrush, QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
 from .file_attribute_view import FileAttributeView
@@ -20,10 +20,11 @@ class NonExpandableTreeView(QTreeView):
     def __init__(self, parent=None):
         super(NonExpandableTreeView, self).__init__(parent)
         self.expanded.connect(self.collapseImmediately)
-    
+        self.clicked_folder_index = QModelIndex()  # No index at start
+
     def collapseImmediately(self, index):
         self.collapse(index)
-        
+
     def mousePressEvent(self, event):
         index = self.indexAt(event.pos())
         if index.isValid() and self.model().hasChildren(index):
@@ -32,8 +33,20 @@ class NonExpandableTreeView(QTreeView):
                 self.collapse(index)
             else:
                 self.expand(index)
+            self.clicked_folder_index = index
+            self.update(index)  # Redraw the item
             return
         super(NonExpandableTreeView, self).mousePressEvent(event)
+
+class CustomFileSystemModel(QFileSystemModel):
+    def __init__(self, tree_view):
+        super().__init__()
+        self.tree_view = tree_view
+
+    def data(self, index, role):
+        if index == self.tree_view.clicked_folder_index and role == Qt.BackgroundRole:
+            return QBrush(QColor('red'))
+        return super().data(index, role)
     
 class TreeListGenerator(QMainWindow):
 
@@ -66,7 +79,7 @@ class TreeListGenerator(QMainWindow):
         # Create a new file tree list
         self.treeView = NonExpandableTreeView(self)
         self.treeView.setFixedWidth(250)
-        self.model = QFileSystemModel()
+        self.model = CustomFileSystemModel(self.treeView)
         self.model.setRootPath(startingPath)
 
         self.treeView.setModel(self.model)
@@ -173,8 +186,3 @@ class TreeListGenerator(QMainWindow):
             # Delete the widget to release its resources
             self.splitter.widget(self.splitter.count() - 1).deleteLater()
             self.treeViewList.pop()
-
-    def highlightFolder(self, index):
-        item = self.treeView.indexWidget(index)
-        if item:
-            item.setStyleSheet("background-color: red;")
