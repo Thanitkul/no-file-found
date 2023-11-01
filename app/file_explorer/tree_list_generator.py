@@ -93,11 +93,22 @@ class TreeListGenerator(QMainWindow):
         self.treeViewList.append(self.treeView)
 
     def openFolder(self, index): 
-        print(self.treeView in self.treeViewList)
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
-        # Add the opened folder to the list of opened folders
-        self.treeViewList.append(self.treeView)
+
+        # Find which treeView the folder was opened from
+        originTreeView = self.sender()
+
+        # Find the position of this treeView in the treeViewList
+        position = self.treeViewList.index(originTreeView)
+
+        # Remove every tree list after the current one
+        for i in range(len(self.treeViewList) - 1, position, -1):
+            self.splitter.replaceWidget(i, None)
+            self.treeViewList[i].deleteLater()
+            self.treeViewList.pop()
+
+        # Now add the new tree list for the opened folder
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
        
