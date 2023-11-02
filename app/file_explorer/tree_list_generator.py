@@ -56,6 +56,7 @@ class TreeListGenerator(QMainWindow):
         # Create a horizontal layout for the navigation bar
         self.layout = QHBoxLayout()
         self.displayingFile = None
+        self.currentPath = ''
         self.treeViewList = []  # List to keep track of tree view
         self.initUI()
 
@@ -77,6 +78,8 @@ class TreeListGenerator(QMainWindow):
 
     
     def addFileTreeList(self, splitter, startingPath):
+        self.currentPath = startingPath
+        print(self.currentPath)
         # Create a new file tree list
         self.treeView = NonExpandableTreeView(self)
         self.treeView.setFixedWidth(250)
