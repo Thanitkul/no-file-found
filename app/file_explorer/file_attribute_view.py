@@ -14,17 +14,6 @@ from qtpy.QtCore import Qt
 class FileAttributeView(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
-
-    '''
-    Initialize attribute table and first tree list
-    Arguments:
-        None
-    '''
-    def initUI(self):
-        # Create a table to display file attributes
-        self.displayingFile = None
-
 
     def updateAttributeTable(self, attributes):
         self.attributeTable = QTableWidget()

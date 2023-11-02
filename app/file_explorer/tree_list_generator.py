@@ -55,6 +55,7 @@ class TreeListGenerator(QMainWindow):
         self.splitter = QSplitter(Qt.Horizontal)
         # Create a horizontal layout for the navigation bar
         self.layout = QHBoxLayout()
+        self.displayingFile = None
         self.treeViewList = []  # List to keep track of tree view
         self.initUI()
 
@@ -130,7 +131,7 @@ class TreeListGenerator(QMainWindow):
         if index.isValid() and not self.model.isDir(index):
             # Event handler for displaying file attributes
             filePath = self.model.filePath(index)
-            if filePath == FileAttributeView().displayingFile:
+            if filePath == self.displayingFile:
 
                 # Assuming splitter is your QSplitter instance
                 latestWidget = self.splitter.widget(
