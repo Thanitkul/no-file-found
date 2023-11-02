@@ -131,6 +131,7 @@ class TreeListGenerator(QMainWindow):
         if index.isValid() and not self.model.isDir(index):
             # Event handler for displaying file attributes
             filePath = self.model.filePath(index)
+            print('display1',filePath, self.displayingFile)
             if filePath == self.displayingFile:
 
                 # Assuming splitter is your QSplitter instance
@@ -141,17 +142,38 @@ class TreeListGenerator(QMainWindow):
                 latestWidget.deleteLater()  # Delete the widget to release its resources
 
             else:
-                # Get and display file attributes
-                attributes = {
-                    'File Name': filePath.split('/')[-1],
-                    'Last Modified': self.model.lastModified(index).toString(),
-                    'File Size': f"{self.model.size(index) / 1024:.2f} KB"
-                }
-                print(attributes)
-                self.displayingFile = filePath
-                self.attributeViewFile.updateAttributeTable(attributes)
-                self.attributeTable = self.attributeViewFile.attributeTable
-                self.splitter.addWidget(self.attributeTable)
+                if self.displayingFile is None:
+                    # Get and display file attributes
+                    attributes = {
+                        'File Name': filePath.split('/')[-1],
+                        'Last Modified': self.model.lastModified(index).toString(),
+                        'File Size': f"{self.model.size(index) / 1024:.2f} KB"
+                    }
+                    print(attributes)
+                    self.displayingFile = filePath
+                    print('display2',self.displayingFile)
+                    self.attributeViewFile.updateAttributeTable(attributes)
+                    self.attributeTable = self.attributeViewFile.attributeTable
+                    self.splitter.addWidget(self.attributeTable)
+                else:
+                    # Assuming splitter is your QSplitter instance
+                    latestWidget = self.splitter.widget(
+                        self.splitter.count() - 1)  # Get the latest widget
+                    # Remove the latest widget
+                    self.splitter.replaceWidget(self.splitter.count() - 1, None)
+                    latestWidget.deleteLater()  # Delete the widget to release its resources
+                    # Get and display file attributes
+                    attributes = {
+                        'File Name': filePath.split('/')[-1],
+                        'Last Modified': self.model.lastModified(index).toString(),
+                        'File Size': f"{self.model.size(index) / 1024:.2f} KB"
+                    }
+                    print(attributes)
+                    self.displayingFile = filePath
+                    print('display2',self.displayingFile)
+                    self.attributeViewFile.updateAttributeTable(attributes)
+                    self.attributeTable = self.attributeViewFile.attributeTable
+                    self.splitter.addWidget(self.attributeTable)
 
     def backButton(self):
         # Create a back button
