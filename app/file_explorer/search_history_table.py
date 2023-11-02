@@ -1,3 +1,11 @@
+'''
+search_history_table.py
+
+Adds a button to view search history, and displays the search history in a table,
+then adds a export function to export the search history as a CSV file.
+
+Created by Korn Visaltanachoti (Bank), 14 October 2023
+'''
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import csv
 
