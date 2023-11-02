@@ -51,6 +51,8 @@ class SearchHistoryTable:
         fileName = 'export.csv'
         with open(fileName, 'w', newline='') as file:
             writer = csv.writer(file) 
-            writer.writerow(columnName)
+            writer.writerow(csvColumnName)
             writer.writerows(testData) 
     
+    def saveToHistory():
+        pass
