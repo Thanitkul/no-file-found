@@ -9,7 +9,7 @@ Created by Korn Visaltanachoti (Bank), 14 October 2023
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import csv
 from tkinter import filedialog
-from app.history.CSVexporter import exportAsCSV
+from ..history.CSVexporter import exportAsCSV
 
 tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
 csvColumnName = ['fileName', 'filePath', 'fileSize', 'fileLastModified', 'searchStartingDirectory', 'searchTerm', 'searchDate']
