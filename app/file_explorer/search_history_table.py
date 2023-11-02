@@ -8,6 +8,7 @@ Created by Korn Visaltanachoti (Bank), 14 October 2023
 '''
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import csv
+from tkinter import filedialog
 
 tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
 csvColumnName = ['fileName', 'filePath', 'fileSize', 'fileLastModified', 'searchStartingDirectory', 'searchTerm', 'searchDate']
@@ -56,7 +57,9 @@ class SearchHistoryTable:
         self.searchTableWindow.show()
 
     def exportAsCSV(self):
-        fileName = 'export.csv'
+        fileName = filedialog.asksaveasfilename(defaultextension=".csv",
+                                                initialfile="export",
+                                                filetypes=[("CSV Files", "*.csv"), ("All files", "*.*")])
         with open(fileName, 'w', newline='') as file:
             writer = csv.writer(file) 
             writer.writerow(csvColumnName)

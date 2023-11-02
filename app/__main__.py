@@ -29,9 +29,9 @@ class FileTreeViewer(QWidget):
         centralLayout.addWidget(self.treeListGenerator.backButton)
         centralLayout.addWidget(self.fileSearchEngine.searchBar)
         centralLayout.addWidget(self.treeListGenerator.splitter)
-        centralLayout.addWidget(self.searchHistoryTable.historyButton)
         centralLayout.addWidget(self.fileSearchEngine.tree_widget)
-
+        centralLayout.addWidget(self.searchHistoryTable.historyButton)
+        
         scrollArea = QScrollArea()
         scrollArea.setWidgetResizable(True)
         scrollArea.setWidget(centralWidget)
