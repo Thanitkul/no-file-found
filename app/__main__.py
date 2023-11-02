@@ -26,6 +26,7 @@ class FileTreeViewer(QWidget):
     
         centralWidget = QWidget()
         centralLayout = QVBoxLayout(centralWidget)
+        centralLayout.addWidget(self.treeListGenerator.backButton)
         centralLayout.addWidget(self.fileSearchEngine.searchBar)
         centralLayout.addWidget(self.treeListGenerator.splitter)
         centralLayout.addWidget(self.searchHistoryTable.historyButton)
