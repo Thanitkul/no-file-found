@@ -45,24 +45,19 @@ class FileSearchEngine(QMainWindow):
         super().__init__()
         self.searchBar = QLineEdit(self)
         self.searchBar.setPlaceholderText("Search...")
-        self.file_list_indexer = CDLL("./app/os/file_list_indexer.so")
-        self.file_list_indexer.FileSearcher.restype = c_char_p
+        # self.file_list_indexer = CDLL("./app/os/file_list_indexer.so")
+        # self.file_list_indexer.FileSearcher.restype = c_char_p
         self.searchBar.returnPressed.connect(self.search_folders)
         self.tree_widget = CustomFileTreeWidget()
         self.tree_widget.setHeaderLabel("Search Results")
 
-    def search(self, current_path: str = "/home/pooh/"):
-        querry = self.searchBar.text()
-        # querry = "*.png"
-        search_results = self.file_list_indexer.FileSearcher(b"..", b"__main__.py")
-        print(search_results)
-        return json.loads(search_results.decode("utf-8"))
     
     def search_folders(self):
         print("i been ran")
         # self.search()
         search_path = self.searchBar.text()
-        parent_path = self.windowFilePath()
+        # parent_path = self.windowFilePath()
+        parent_path = "/home/pooh/Downloads"
         print(parent_path)
         result = search_directory(parent_path,search_path)
         print(result)
