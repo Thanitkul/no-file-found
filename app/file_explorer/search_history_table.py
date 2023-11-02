@@ -9,16 +9,13 @@ Created by Korn Visaltanachoti (Bank), 14 October 2023
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import csv
 from tkinter import filedialog
-from history.CSVexporter import exportAsCSV
+from app.history.CSVexporter import exportAsCSV
 
 tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
 csvColumnName = ['fileName', 'filePath', 'fileSize', 'fileLastModified', 'searchStartingDirectory', 'searchTerm', 'searchDate']
 
 searchHistoryData = []
 
-
-row = searchHistoryData.__len__()
-col = searchHistoryData[0].__len__()
 
 class SearchHistoryTable:
     def __init__(self):
@@ -43,6 +40,8 @@ class SearchHistoryTable:
         self.setupTable()
         
     def setupTable(self):
+        row = len(searchHistoryData)
+        col = len(tableColumnName)
         self.tableWidget.setRowCount(row)
         self.tableWidget.setColumnCount(col)
         self.tableWidget.setHorizontalHeaderLabels(tableColumnName)
