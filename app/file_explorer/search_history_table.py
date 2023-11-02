@@ -26,6 +26,7 @@ class SearchHistoryTable:
         self.exportButton = QPushButton("Export as CSV")
         self.exportButton.clicked.connect(self.exportAsCSV)
         self.tableWidget = QTableWidget()
+        self.initUI()
     
     def initUI(self):
         self.searchTableWindow = QMainWindow()
@@ -52,7 +53,6 @@ class SearchHistoryTable:
         
 
     def historyButtonClicked(self):
-        self.initUI()
         self.searchTableWindow.show()
 
     def exportAsCSV(self):
