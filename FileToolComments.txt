@@ -37,3 +37,6 @@ Excellent code review report!
 Good to see active development in code (a commit 14 minutes ago!)
 
 
+2023-11-02: Generally good deployment plan, but HOW do you create .deb or .rpm packages? What are the steps? And what about creating the PyInstaller executables? 
+
+Should not use Readme.md for installation instructions to the general public.
