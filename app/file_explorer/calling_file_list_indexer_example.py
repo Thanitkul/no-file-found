@@ -13,7 +13,7 @@ Created by Phasit Thanitkul (Kane), 11 October 2023
 from ctypes import *
 # open the file_list_indexer.so library from cwd + ../os/file_list_indexer.so
 
-file_list_indexer = CDLL("../os/file_list_indexer.so")
+file_list_indexer = CDLL("./app/os/file_list_indexer.so")
 
 
 
@@ -27,6 +27,7 @@ file_list_indexer.FileSearcher.restype = c_char_p
 rawSearchResult = file_list_indexer.FileSearcher(b"../..", b"list")
 print("debug: rawSearchResult: ", id(rawSearchResult))
 
+searchResult = file_list_indexer.FileSearcher(b"..", b"c?lling_[c-g][a-r]le_*")
 print("Search result returned from file_list_indexer.so library:")
 print(rawSearchResult, "\n")
 
