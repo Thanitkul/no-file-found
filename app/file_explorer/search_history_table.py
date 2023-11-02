@@ -9,15 +9,16 @@ Created by Korn Visaltanachoti (Bank), 14 October 2023
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import csv
 from tkinter import filedialog
+from history.CSVexporter import exportAsCSV
 
 tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
 csvColumnName = ['fileName', 'filePath', 'fileSize', 'fileLastModified', 'searchStartingDirectory', 'searchTerm', 'searchDate']
-testData = [
-    ['Test.png', 'C:\\Desktop\\Test.png', '1.2 MB', '12/10/2023 12:00:00 AM', 'C:\\', 'Test', '12/10/2023 12:00:00 AM'],
-    ['Test2.png', 'C:\\Desktop\\Test2.png', '1.2 MB', '12/10/2023 12:00:00 AM', 'C:\\', 'Test', '12/10/2023 12:00:00 AM'],
-]
-row = testData.__len__()
-col = testData[0].__len__()
+
+searchHistoryData = []
+
+
+row = searchHistoryData.__len__()
+col = searchHistoryData[0].__len__()
 
 class SearchHistoryTable:
     def __init__(self):
@@ -25,7 +26,7 @@ class SearchHistoryTable:
         self.historyButton = QPushButton("Search History")
         self.historyButton.clicked.connect(self.historyButtonClicked)
         self.exportButton = QPushButton("Export as CSV")
-        self.exportButton.clicked.connect(self.exportAsCSV)
+        self.exportButton.clicked.connect(exportAsCSV(csvColumnName, searchHistoryData))
         self.tableWidget = QTableWidget()
         self.initUI()
     
@@ -47,7 +48,7 @@ class SearchHistoryTable:
         self.tableWidget.setHorizontalHeaderLabels(tableColumnName)
         for r in range(row):
             for c in range(col):
-                item = QTableWidgetItem(testData[r][c])
+                item = QTableWidgetItem(searchHistoryData[r][c])
                 self.tableWidget.setItem(r, c, item)
         self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
@@ -55,15 +56,18 @@ class SearchHistoryTable:
 
     def historyButtonClicked(self):
         self.searchTableWindow.show()
-
-    def exportAsCSV(self):
-        fileName = filedialog.asksaveasfilename(defaultextension=".csv",
-                                                initialfile="export",
-                                                filetypes=[("CSV Files", "*.csv"), ("All files", "*.*")])
-        with open(fileName, 'w', newline='') as file:
-            writer = csv.writer(file) 
-            writer.writerow(csvColumnName)
-            writer.writerows(testData) 
     
     def saveToHistory():
         pass
+
+# This function is called by file_search_engine.py to add the search history to the table
+# Arguments:
+#   fileName: the name of the file
+#   filePath: the path of the file
+#   fileSize: the size of the file
+#   fileLastModified: the last modified date of the file
+#   searchStartingDirectory: the directory that the search started from
+#   searchTerm: the search term
+#   searchDate: the date that the search was performed
+def saveHistory(fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate):
+    searchHistoryData.append([fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate])
