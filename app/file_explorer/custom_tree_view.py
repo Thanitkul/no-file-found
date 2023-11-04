@@ -7,7 +7,7 @@ Created by Mo, 5 November, 2023.
 '''
 
 # Import from required library
-from qtpy.QtWidgets import (QTreeView, QStyleOptionViewItem, QMessageBox)
+from qtpy.QtWidgets import (QTreeView, QStyleOptionViewItem, QMessageBox, QFileSystemModel)
 from qtpy.QtGui import QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
@@ -181,3 +181,13 @@ class CustomTreeView(QTreeView):
             return False
 
 
+class CustomFileSystemModel(QFileSystemModel):
+    '''
+    Get files data from OS.
+    Arguments:
+        tree_view: QTreeView
+    '''
+    def __init__(self, tree_view):
+        super().__init__()
+        # Set the tree view for the file system model
+        self.tree_view = tree_view

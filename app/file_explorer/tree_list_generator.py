@@ -9,7 +9,7 @@ Created by Mo, 12 October, 2023.
 '''
 
 # Import the required modules
-from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox, QFileSystemModel,
+from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox,
                             QHBoxLayout, QPushButton, QScrollArea, QLabel)
 from qtpy.QtGui import QIcon
 from qtpy.QtCore import Qt
@@ -17,7 +17,7 @@ import os
 
 # Import the file attribute view
 from .file_attribute_view import FileAttributeView
-from .custom_tree_view import CustomTreeView
+from .custom_tree_view import CustomTreeView, CustomFileSystemModel
     
 class TreeListGenerator(QMainWindow):
     '''
@@ -77,7 +77,7 @@ class TreeListGenerator(QMainWindow):
         self.treeView.setFixedWidth(250)
         # Create a model for the file system
         # Value stroing os data
-        self.model = QFileSystemModel(self.treeView)
+        self.model = CustomFileSystemModel(self.treeView)
         self.model.setRootPath(startingPath)
         self.treeView.setModel(self.model)
 
