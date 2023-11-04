@@ -74,9 +74,11 @@ class FileAttributeView(QMainWindow):
 
         # Populate the attribute table with the new attributes
         for key, value in attributes.items():
+            # Insert a new row at the bottom of the table
             rowPosition = self.attributeTable.rowCount()
             self.attributeTable.insertRow(rowPosition)
 
+            # Create items for the key and value
             key_item = QTableWidgetItem(key)
             value_item = QTableWidgetItem(value)
 
