@@ -89,7 +89,7 @@ class TreeListGenerator(QMainWindow):
             # Remove the latest widget
             self.removeLatestWidgetFromSplitter()
             self.displayingFile = None
-            # self.treeView.clearSelection()
+            self.treeViewList[-1].clearFileHighlight()
 
         # Get the file path from the model
         folderPath = self.model.filePath(index)
@@ -137,6 +137,7 @@ class TreeListGenerator(QMainWindow):
 
     def selectFile(self, index):
         if index.isValid() and not self.model.isDir(index):
+            
             # Event handler for displaying file attributes
             filePath = self.model.filePath(index)
             print('display1',filePath, self.displayingFile)
@@ -157,6 +158,9 @@ class TreeListGenerator(QMainWindow):
                         widget_to_remove.hide()
                         self.treeViewList[i].deleteLater()
                         self.treeViewList.pop()
+                        
+                    # Remove the highlight from the folder
+                    self.treeViewList[-1].clearFolderHighlight()
                     # Get and display file attributes
                     attributes = {
                         'File Name': filePath.split('/')[-1],

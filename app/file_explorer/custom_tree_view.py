@@ -8,7 +8,8 @@ class CustomeTreeView(QTreeView):
     def __init__(self, parent=None):
         super(CustomeTreeView, self).__init__(parent)
         self.expanded.connect(self.collapseImmediately)
-        self.clicked_folder_index = QModelIndex()  # No index at start
+        self.clicked_folder_index = QModelIndex()
+        self.clicked_file_index = QModelIndex()
         
         # Set the stylesheet to have a transparent selection background color
         self.setStyleSheet("""
@@ -50,11 +51,33 @@ class CustomeTreeView(QTreeView):
         else:
             # If the item is not selected, keep the original background
             options.palette.setColor(QPalette.Text, Qt.black)
+        if index == self.clicked_file_index:
+            painter.save()
+            color = QColor('#0067B4')
+            painter.setBrush(color)
+            painter.setPen(Qt.NoPen)
+            painter.drawRect(options.rect)
+            painter.restore()
+
+            # Set the text color to black
+            options.palette.setColor(QPalette.Text, Qt.black)
+                # If the item is selected, change the background to blue
+
+            # Set the text color to white for better contrast
+            options.palette.setColor(QPalette.Text, Qt.white)
+        else:
+            # If the item is not selected, keep the original background
+            options.palette.setColor(QPalette.Text, Qt.black)
+
         # Now let the base class draw the row with the possibly modified options
         super().drawRow(painter, original_options, index)
 
     def clearFolderHighlight(self):
         self.clicked_folder_index = QModelIndex()
+        self.viewport().update()  # This will trigger a repaint of the tree view
+
+    def clearFileHighlight(self):
+        self.clicked_file_index = QModelIndex()
         self.viewport().update()  # This will trigger a repaint of the tree view
 
     def collapseImmediately(self, index):
@@ -65,13 +88,14 @@ class CustomeTreeView(QTreeView):
         if not index.isValid():
             # If the click is on empty space, do nothing
             return
-
+        
         # Ensure we only expand/collapse directories
         if self.model().isDir(index):
             self.clicked_folder_index = index
             # Instead of directly toggling, use the expand method which checks for read access
             self.expand(index) if not self.isExpanded(index) else self.collapse(index)
         else:
+            self.clicked_file_index = index
             super(CustomeTreeView, self).mousePressEvent(event)
 
     def expand(self, index):
