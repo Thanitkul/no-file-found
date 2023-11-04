@@ -8,51 +8,21 @@ contain file inside that folder appear next to the previous tree list.
 Created by Mo, 12 October, 2023.
 '''
 from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
-                            QHBoxLayout, QPushButton)
+                            QHBoxLayout, QPushButton, QScrollArea)
 from qtpy.QtGui import QIcon, QBrush, QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
 from .file_attribute_view import FileAttributeView
-
-
-class NonExpandableTreeView(QTreeView):
-
-    def __init__(self, parent=None):
-        super(NonExpandableTreeView, self).__init__(parent)
-        self.expanded.connect(self.collapseImmediately)
-        self.clicked_folder_index = QModelIndex()  # No index at start
-
-    def collapseImmediately(self, index):
-        self.collapse(index)
-
-    def mousePressEvent(self, event):
-        index = self.indexAt(event.pos())
-        if index.isValid() and self.model().hasChildren(index):
-            # If it's a folder, toggle expansion upon single click
-            if self.isExpanded(index):
-                self.collapse(index)
-            else:
-                self.expand(index)
-            self.clicked_folder_index = index
-            self.update(index)  # Redraw the item
-            return
-        super(NonExpandableTreeView, self).mousePressEvent(event)
-
-class CustomFileSystemModel(QFileSystemModel):
-    def __init__(self, tree_view):
-        super().__init__()
-        self.tree_view = tree_view
-
-    def data(self, index, role):
-        if index == self.tree_view.clicked_folder_index and role == Qt.BackgroundRole:
-            return QBrush(QColor('red'))
-        return super().data(index, role)
     
 class TreeListGenerator(QMainWindow):
 
     def __init__(self):
         super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
+        self.treeViews = QScrollArea()
+        self.treeViews.setWidgetResizable(True)
+        self.treeViews.setWidget(self.splitter)
+        
         # Create a horizontal layout for the navigation bar
         self.layout = QHBoxLayout()
         self.displayingFile = None
@@ -72,7 +42,7 @@ class TreeListGenerator(QMainWindow):
         # Create the initial file tree list
         self.addFileTreeList(self.splitter, '')
         # Set the splitter as the central widget
-        self.setCentralWidget(self.splitter)
+        self.setCentralWidget(self.treeViews)
         # Create a back button
         self.backButton()
 
@@ -108,6 +78,8 @@ class TreeListGenerator(QMainWindow):
         self.treeView.clicked.connect(self.selectFile)
         
         self.treeViewList.append(self.treeView)
+        self.scrollRight()
+
 
     def openFolder(self, index):
         if self.displayingFile is not None:
@@ -117,6 +89,8 @@ class TreeListGenerator(QMainWindow):
             # Remove the latest widget
             self.splitter.replaceWidget(self.splitter.count() - 1, None)
             latestWidget.deleteLater()  # Delete the widget to release its resources
+            self.displayingFile = None
+            self.treeViewList.pop()
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
 
@@ -143,7 +117,6 @@ class TreeListGenerator(QMainWindow):
             filePath = self.model.filePath(index)
             print('display1',filePath, self.displayingFile)
             if filePath == self.displayingFile:
-
                 # Assuming splitter is your QSplitter instance
                 latestWidget = self.splitter.widget(
                     self.splitter.count() - 1)  # Get the latest widget
@@ -151,6 +124,7 @@ class TreeListGenerator(QMainWindow):
                 self.splitter.replaceWidget(self.splitter.count() - 1, None)
                 latestWidget.deleteLater()  # Delete the widget to release its resources
                 self.displayingFile = None
+                self.treeViewList.pop()
 
             else:
                 if self.displayingFile is None:
@@ -166,6 +140,7 @@ class TreeListGenerator(QMainWindow):
                     self.attributeViewFile.updateAttributeTable(attributes)
                     self.attributeTable = self.attributeViewFile.attributeTable
                     self.splitter.addWidget(self.attributeTable)
+                    self.treeViewList.append(self.attributeTable)
                 else:
                     # Assuming splitter is your QSplitter instance
                     latestWidget = self.splitter.widget(
@@ -173,6 +148,7 @@ class TreeListGenerator(QMainWindow):
                     # Remove the latest widget
                     self.splitter.replaceWidget(self.splitter.count() - 1, None)
                     latestWidget.deleteLater()  # Delete the widget to release its resources
+                    self.treeViewList.pop()
                     # Get and display file attributes
                     attributes = {
                         'File Name': filePath.split('/')[-1],
@@ -185,7 +161,15 @@ class TreeListGenerator(QMainWindow):
                     self.attributeViewFile.updateAttributeTable(attributes)
                     self.attributeTable = self.attributeViewFile.attributeTable
                     self.splitter.addWidget(self.attributeTable)
-
+                    self.treeViewList.append(self.attributeTable)
+        self.scrollRight()
+    def scrollRight(self):
+        # Ensure that the splitter is updated before scrolling
+        self.splitter.adjustSize()
+        # Get the horizontal scrollbar of the scroll area and set its value to the maximum
+        horizontal_scrollbar = self.treeViews.horizontalScrollBar()
+        horizontal_scrollbar.setValue(horizontal_scrollbar.maximum())
+    
     def backButton(self):
         # Create a back button
         self.backButton = QPushButton()
@@ -220,3 +204,43 @@ class TreeListGenerator(QMainWindow):
             # Delete the widget to release its resources
             self.splitter.widget(self.splitter.count() - 1).deleteLater()
             self.treeViewList.pop()
+    
+    def removeLatestWidgetFromSplitter(self):
+        # Remove the latest widget
+        self.splitter.replaceWidget(self.splitter.count() - 1, None)
+        # Delete the widget to release its resources
+        self.splitter.widget(self.splitter.count() - 1).deleteLater()
+        self.treeViewList.pop()
+
+class NonExpandableTreeView(QTreeView):
+
+    def __init__(self, parent=None):
+        super(NonExpandableTreeView, self).__init__(parent)
+        self.expanded.connect(self.collapseImmediately)
+        self.clicked_folder_index = QModelIndex()  # No index at start
+
+    def collapseImmediately(self, index):
+        self.collapse(index)
+
+    def mousePressEvent(self, event):
+        index = self.indexAt(event.pos())
+        if index.isValid() and self.model().hasChildren(index):
+            # If it's a folder, toggle expansion upon single click
+            if self.isExpanded(index):
+                self.collapse(index)
+            else:
+                self.expand(index)
+            self.clicked_folder_index = index
+            self.update(index)  # Redraw the item
+            return
+        super(NonExpandableTreeView, self).mousePressEvent(event)
+
+class CustomFileSystemModel(QFileSystemModel):
+    def __init__(self, tree_view):
+        super().__init__()
+        self.tree_view = tree_view
+
+    def data(self, index, role):
+        if index == self.tree_view.clicked_folder_index and role == Qt.BackgroundRole:
+            return QBrush(QColor('red'))
+        return super().data(index, role)
