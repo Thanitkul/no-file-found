@@ -1,4 +1,3 @@
-teamB edited here
 # no-file-found
 
 ## Team name: no-file-found
@@ -14,4 +13,3 @@ Run:
 ```
 python -m app
 ```
-Team B sucks

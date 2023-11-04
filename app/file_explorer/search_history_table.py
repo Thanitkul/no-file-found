@@ -20,9 +20,14 @@ searchHistoryData = []
 class SearchHistoryTable:
     def __init__(self):
         super().__init__()
+        # Adds the search history button to the main window
         self.historyButton = QPushButton("Search History")
         self.historyButton.clicked.connect(self.historyButtonClicked)
+
+        # Adds the export button to the search history window
         self.exportButton = QPushButton("Export as CSV")
+        # Connects the button to the export function
+        # lambda is used otherwise the function will be called when the button is created
         self.exportButton.clicked.connect(lambda: exportAsCSV(csvColumnName, searchHistoryData))
         self.tableWidget = QTableWidget()
         self.initUI()
@@ -38,7 +43,8 @@ class SearchHistoryTable:
         layout.addWidget(self.exportButton)
         self.searchTableWindow.setCentralWidget(centralWidget)
         self.setupTable()
-        
+    
+    # Prepares the data for the history table
     def setupTable(self):
         row = len(searchHistoryData)
         col = len(tableColumnName)
@@ -52,12 +58,9 @@ class SearchHistoryTable:
         self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
         
-
+    # Displays the search history table
     def historyButtonClicked(self):
         self.searchTableWindow.show()
-    
-    def saveToHistory():
-        pass
 
 # This function is called by file_search_engine.py to add the search history to the table
 # Arguments:
