@@ -190,3 +190,6 @@ class TreeListGenerator(QMainWindow):
             # Delete the widget to release its resources
             self.splitter.widget(self.splitter.count() - 1).deleteLater()
             self.treeViewList.pop()
+
+    def getCurrentPath(self):
+        return self.currentPath
