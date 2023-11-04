@@ -8,7 +8,7 @@ contain file inside that folder appear next to the previous tree list.
 Created by Mo, 12 October, 2023.
 '''
 from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
-                            QHBoxLayout, QPushButton, QScrollArea)
+                            QHBoxLayout, QPushButton, QScrollArea, QStyledItemDelegate, QStyle, QStyleOptionViewItem)
 from qtpy.QtGui import QIcon, QBrush, QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
@@ -51,7 +51,7 @@ class TreeListGenerator(QMainWindow):
         self.currentPath = startingPath
         print(self.currentPath)
         # Create a new file tree list
-        self.treeView = NonExpandableTreeView(self)
+        self.treeView = CustomeTreeView(self)
         self.treeView.setFixedWidth(250)
         self.model = CustomFileSystemModel(self.treeView)
         self.model.setRootPath(startingPath)
@@ -186,6 +186,9 @@ class TreeListGenerator(QMainWindow):
         # Remove the latest widget
         if self.splitter.count() > 1:
             self.removeLatestWidgetFromSplitter()
+            # If there's at least one tree view left, clear its highlight
+            if self.treeViewList:
+                self.treeViewList[-1].clearHighlight()
     
     def removeLatestWidgetFromSplitter(self):
         # Remove the latest widget
@@ -194,19 +197,57 @@ class TreeListGenerator(QMainWindow):
         self.splitter.widget(self.splitter.count() - 1).deleteLater()
         self.treeViewList.pop()
 
-class NonExpandableTreeView(QTreeView):
-
+class CustomeTreeView(QTreeView):
     def __init__(self, parent=None):
-        super(NonExpandableTreeView, self).__init__(parent)
+        super(CustomeTreeView, self).__init__(parent)
         self.expanded.connect(self.collapseImmediately)
         self.clicked_folder_index = QModelIndex()  # No index at start
+        
+        # Set the stylesheet to have a transparent selection background color
+        self.setStyleSheet("""
+            QTreeView::item:selected {
+                background: transparent;
+            }
+            QTreeView::item:hover {
+                background: #E0E0E0;  /* or any light color you prefer for hover */
+            }
+            QTreeView::item {
+                color: black;
+                outline: none !important;
+            }               
+        """)
+
+    def drawRow(self, painter, options, index):
+        # Use the original options to maintain the original style, including text color
+        original_options = QStyleOptionViewItem(options)
+
+        if index == self.clicked_folder_index:
+            painter.save()
+            color = QColor('red')
+            painter.setBrush(color)
+            painter.setPen(Qt.NoPen)
+            painter.drawRect(options.rect)
+            painter.restore()
+
+            # Set the text color to black
+            options.palette.setColor(QPalette.Text, Qt.black)
+
+        # Now let the base class draw the row with the possibly modified options
+        super().drawRow(painter, original_options, index)
+
+    def clearHighlight(self):
+        self.clicked_folder_index = QModelIndex()
+        self.viewport().update()  # This will trigger a repaint of the tree view
 
     def collapseImmediately(self, index):
         self.collapse(index)
 
     def mousePressEvent(self, event):
         index = self.indexAt(event.pos())
-        if index.isValid() and self.model().hasChildren(index):
+        if not index.isValid():
+            # If the click is on empty space, do nothing
+            return
+        if self.model().hasChildren(index):
             # If it's a folder, toggle expansion upon single click
             if self.isExpanded(index):
                 self.collapse(index)
@@ -214,15 +255,11 @@ class NonExpandableTreeView(QTreeView):
                 self.expand(index)
             self.clicked_folder_index = index
             self.update(index)  # Redraw the item
-            return
-        super(NonExpandableTreeView, self).mousePressEvent(event)
+        else:
+            super(CustomeTreeView, self).mousePressEvent(event)
 
 class CustomFileSystemModel(QFileSystemModel):
     def __init__(self, tree_view):
         super().__init__()
         self.tree_view = tree_view
 
-    def data(self, index, role):
-        if index == self.tree_view.clicked_folder_index and role == Qt.BackgroundRole:
-            return QBrush(QColor('red'))
-        return super().data(index, role)
