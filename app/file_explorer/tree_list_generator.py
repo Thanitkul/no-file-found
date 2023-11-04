@@ -7,15 +7,15 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
-                            QHBoxLayout, QPushButton, QScrollArea, QStyleOptionViewItem, 
-                            QMessageBox, QLabel)
-from qtpy.QtGui import QIcon, QPalette, QColor
-from qtpy.QtCore import Qt, QModelIndex
+from qtpy.QtWidgets import (QMainWindow, QSplitter,
+                            QHBoxLayout, QPushButton, QScrollArea, QLabel)
+from qtpy.QtGui import QIcon
+from qtpy.QtCore import Qt
 import os
 
 # Import the file attribute view
 from .file_attribute_view import FileAttributeView
+from .custom_tree_view import CustomeTreeView, CustomFileSystemModel
     
 class TreeListGenerator(QMainWindow):
     def __init__(self):
@@ -89,6 +89,7 @@ class TreeListGenerator(QMainWindow):
             # Remove the latest widget
             self.removeLatestWidgetFromSplitter()
             self.displayingFile = None
+            
 
         # Get the file path from the model
         folderPath = self.model.filePath(index)
@@ -119,6 +120,7 @@ class TreeListGenerator(QMainWindow):
             self.splitter.addWidget(emptyLabel)
             # Add the label to the tree view list for management
             self.treeViewList.append(emptyLabel)
+            self.scrollRight()
             return
         # Now add the new tree list for the opened folder
         self.addFileTreeList(self.splitter, folderPath)
@@ -137,6 +139,16 @@ class TreeListGenerator(QMainWindow):
 
             else:
                 if self.displayingFile is None:
+                    # Find which treeView the folder was opened from
+                    originTreeView = self.sender()
+                    # Find the position of this treeView in the treeViewList
+                    position = self.treeViewList.index(originTreeView)
+                    # Remove every tree list after the current one
+                    for i in range(len(self.treeViewList) - 1, position, -1):
+                        widget_to_remove = self.splitter.widget(i)
+                        widget_to_remove.hide()
+                        self.treeViewList[i].deleteLater()
+                        self.treeViewList.pop()
                     # Get and display file attributes
                     attributes = {
                         'File Name': filePath.split('/')[-1],
@@ -207,7 +219,7 @@ class TreeListGenerator(QMainWindow):
         self.removeLatestWidgetFromSplitter()
         # If there's at least one tree view left, clear its highlight
         if self.treeViewList:
-            self.treeViewList[-1].clearHighlight()
+            self.treeViewList[-1].clearFolderHighlight()
 
     def removeLatestWidgetFromSplitter(self):
         # Check if there are widgets in the splitter to remove
@@ -220,126 +232,4 @@ class TreeListGenerator(QMainWindow):
             self.treeViewList.pop()
             # Now delete the widget
             widget_to_remove.deleteLater()
-
-class CustomeTreeView(QTreeView):
-    def __init__(self, parent=None):
-        super(CustomeTreeView, self).__init__(parent)
-        self.expanded.connect(self.collapseImmediately)
-        self.clicked_folder_index = QModelIndex()  # No index at start
-        
-        # Set the stylesheet to have a transparent selection background color
-        self.setStyleSheet("""
-            QTreeView::item:selected {
-                background: transparent;
-            }
-            QTreeView::item:hover {
-                background: #E0E0E0 !important;
-            }
-            QTreeView::item {
-                color: black;
-                outline: none !important;
-            }
-            QTreeView::focus {
-                border: none !important;
-                outline: none !important;
-            }
-            QTreeView { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px; }        
-        """)
-
-    def drawRow(self, painter, options, index):
-        # Use the original options to maintain the original style, including text color
-        original_options = QStyleOptionViewItem(options)
-
-        if index == self.clicked_folder_index:
-            painter.save()
-            color = QColor('#0067B4')
-            painter.setBrush(color)
-            painter.setPen(Qt.NoPen)
-            painter.drawRect(options.rect)
-            painter.restore()
-
-            # Set the text color to black
-            options.palette.setColor(QPalette.Text, Qt.black)
-                # If the item is selected, change the background to blue
-        if self.selectionModel().isSelected(index):
-            painter.save()
-            color = QColor('#0067B4')  # Blue color
-            painter.setBrush(color)
-            painter.setPen(Qt.NoPen)
-            painter.drawRect(options.rect)
-            painter.restore()
-
-            # Set the text color to white for better contrast
-            options.palette.setColor(QPalette.Text, Qt.white)
-        else:
-            # If the item is not selected, keep the original background
-            options.palette.setColor(QPalette.Text, Qt.black)
-        # Now let the base class draw the row with the possibly modified options
-        super().drawRow(painter, original_options, index)
-
-    def clearHighlight(self):
-        self.clicked_folder_index = QModelIndex()
-        self.viewport().update()  # This will trigger a repaint of the tree view
-
-    def collapseImmediately(self, index):
-        self.collapse(index)
-
-    def mousePressEvent(self, event):
-        index = self.indexAt(event.pos())
-        if not index.isValid():
-            # If the click is on empty space, do nothing
-            return
-        if self.model().hasChildren(index):
-            # If it's a folder, toggle expansion upon single click
-            if self.isExpanded(index):
-                self.collapse(index)
-            else:
-                self.expand(index)
-            self.clicked_folder_index = index
-            self.update(index)  # Redraw the item
-        else:
-            super(CustomeTreeView, self).mousePressEvent(event)
-    def expand(self, index):
-        # Check if the directory can be accessed before expanding it
-        if not self.isDirReadable(index):
-            self.clearHighlight()
-            QMessageBox.warning(self, "Access Denied", "You don't have permission to access this folder.")
-            return
-        # Check if the directory is empty
-        if not self.model().hasChildren(index):
-            QMessageBox.information(self, "Empty Folder", "This folder is empty.")
-            self.collapse(index)
-            return
-        super(CustomeTreeView, self).expand(index)
-
-    def isDirReadable(self, index):
-        # Try to read the directory contents
-        file_info = self.model().fileInfo(index)
-        try:
-            # Use the os.access method to check if the directory is readable
-            # This is a simple check, there might be cases where it returns True
-            # but you still can't read the directory due to more complex permission issues
-            return os.access(file_info.absoluteFilePath(), os.R_OK)
-        except Exception as e:
-            # Log or handle the error as needed
-            print(f"Error checking directory access: {e}")
-            return False
-
-    def mousePressEvent(self, event):
-        index = self.indexAt(event.pos())
-        if not index.isValid():
-            return
-
-        # Ensure we only expand/collapse directories
-        if self.model().isDir(index):
-            self.clicked_folder_index = index
-            # Instead of directly toggling, use the expand method which checks for read access
-            self.expand(index) if not self.isExpanded(index) else self.collapse(index)
-        else:
-            super(CustomeTreeView, self).mousePressEvent(event)
-
-class CustomFileSystemModel(QFileSystemModel):
-    def __init__(self, tree_view):
-        super().__init__()
-        self.tree_view = tree_view
 

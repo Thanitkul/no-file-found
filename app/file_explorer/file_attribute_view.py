@@ -45,7 +45,7 @@ class FileAttributeView(QMainWindow):
             }
             """
         )
-        self.attributeTable.setFixedWidth(500)
+        self.attributeTable.setFixedWidth(400)
         self.attributeTable.setColumnCount(2)
         self.attributeTable.setHorizontalHeaderLabels(['Attribute', 'Value'])
         self.attributeTable.horizontalHeader().setStretchLastSection(True)
@@ -70,4 +70,4 @@ class FileAttributeView(QMainWindow):
             self.attributeTable.setItem(rowPosition, 1, value_item)
 
             # Increase the height of each row (you can adjust the value as needed)
-            self.attributeTable.setRowHeight(rowPosition, 30)
+            self.attributeTable.setRowHeight(rowPosition, 40)
