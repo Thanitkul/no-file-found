@@ -1,22 +1,35 @@
 '''
-tree_list_generator.py
+file_attribute_view.py
 
-Display file tree list, starting from root and 
-when clicking open folder, a new file tree list which 
-contain file inside that folder appear next to the previous tree list.
+Create file attribute table and put attributes data into it.
 
 Created by Mo, 12 October, 2023.
 '''
+
+# Import from required library
 from qtpy.QtWidgets import QMainWindow, QTableWidgetItem, QTableWidget
 from qtpy.QtCore import Qt
 
-
 class FileAttributeView(QMainWindow):
+    '''
+    Initialize the file attribute table.
+    Arguments:
+        None
+    '''
     def __init__(self):
         super().__init__()
 
+    '''
+    Update the attribute table with the new attributes.
+    Arguments:
+        attributes: a dictionary of attributes
+    '''
     def updateAttributeTable(self, attributes):
+        # Initialize the attribute table
+        # Widget to display attributes table
         self.attributeTable = QTableWidget()
+
+        # Set the stylesheet for the attribute table
         self.attributeTable.setStyleSheet(
             """
             QTableWidget { 
@@ -47,10 +60,15 @@ class FileAttributeView(QMainWindow):
         )
         self.attributeTable.setFixedWidth(400)
         self.attributeTable.setColumnCount(2)
+
+        # Set the header for the attribute table
         self.attributeTable.setHorizontalHeaderLabels(['Attribute', 'Value'])
         self.attributeTable.horizontalHeader().setStretchLastSection(True)
         self.attributeTable.verticalHeader().setVisible(False)
-        
+            
+        # Enable word wrapping
+        self.attributeTable.setWordWrap(True)
+
         # Clear the existing attribute table
         self.attributeTable.setRowCount(0)
 
@@ -58,16 +76,17 @@ class FileAttributeView(QMainWindow):
         for key, value in attributes.items():
             rowPosition = self.attributeTable.rowCount()
             self.attributeTable.insertRow(rowPosition)
-            
+
             key_item = QTableWidgetItem(key)
             value_item = QTableWidgetItem(value)
-            
-            # Make the cells non-editable
-            key_item.setFlags(key_item.flags() ^ Qt.ItemIsEditable)
+
+            # Enable text alignment and word wrapping for the value item
+            value_item.setTextAlignment(Qt.AlignLeft | Qt.AlignTop)
             value_item.setFlags(value_item.flags() ^ Qt.ItemIsEditable)
-            
+
+            # Add items to the table
             self.attributeTable.setItem(rowPosition, 0, key_item)
             self.attributeTable.setItem(rowPosition, 1, value_item)
 
-            # Increase the height of each row (you can adjust the value as needed)
-            self.attributeTable.setRowHeight(rowPosition, 40)
+        # Adjust the row height automatically to fit the contents
+        self.attributeTable.resizeRowsToContents()
