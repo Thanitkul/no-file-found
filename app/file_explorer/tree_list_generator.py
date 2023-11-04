@@ -8,7 +8,7 @@ contain file inside that folder appear next to the previous tree list.
 Created by Mo, 12 October, 2023.
 '''
 from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
-                            QHBoxLayout, QPushButton, QScrollArea, QStyledItemDelegate, QStyle, QStyleOptionViewItem)
+                            QHBoxLayout, QPushButton, QScrollArea, QStyleOptionViewItem, QMessageBox, QLabel)
 from qtpy.QtGui import QIcon, QBrush, QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
@@ -86,6 +86,9 @@ class TreeListGenerator(QMainWindow):
             # Remove the latest widget
             self.removeLatestWidgetFromSplitter()
             self.displayingFile = None
+
+        # Get the file path from the model
+        folderPath = self.model.filePath(index)
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
 
@@ -101,7 +104,19 @@ class TreeListGenerator(QMainWindow):
             widget_to_remove.hide()
             self.treeViewList[i].deleteLater()
             self.treeViewList.pop()
-
+        
+        # Check if the directory is empty
+        if not os.listdir(folderPath):
+            # Create a label with the message
+            emptyLabel = QLabel("No files")
+            emptyLabel.setAlignment(Qt.AlignCenter)
+            emptyLabel.setFixedWidth(250)
+            emptyLabel.setStyleSheet("QLabel { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;}")
+            # Add the label to the splitter
+            self.splitter.addWidget(emptyLabel)
+            # Add the label to the tree view list for management
+            self.treeViewList.append(emptyLabel)
+            return
         # Now add the new tree list for the opened folder
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
@@ -260,6 +275,43 @@ class CustomeTreeView(QTreeView):
                 self.expand(index)
             self.clicked_folder_index = index
             self.update(index)  # Redraw the item
+        else:
+            super(CustomeTreeView, self).mousePressEvent(event)
+    def expand(self, index):
+        # Check if the directory can be accessed before expanding it
+        if not self.isDirReadable(index):
+            QMessageBox.warning(self, "Access Denied", "You don't have permission to access this folder.")
+            return
+        # Check if the directory is empty
+        if not self.model().hasChildren(index):
+            QMessageBox.information(self, "Empty Folder", "This folder is empty.")
+            self.collapse(index)
+            return
+        super(CustomeTreeView, self).expand(index)
+
+    def isDirReadable(self, index):
+        # Try to read the directory contents
+        file_info = self.model().fileInfo(index)
+        try:
+            # Use the os.access method to check if the directory is readable
+            # This is a simple check, there might be cases where it returns True
+            # but you still can't read the directory due to more complex permission issues
+            return os.access(file_info.absoluteFilePath(), os.R_OK)
+        except Exception as e:
+            # Log or handle the error as needed
+            print(f"Error checking directory access: {e}")
+            return False
+
+    def mousePressEvent(self, event):
+        index = self.indexAt(event.pos())
+        if not index.isValid():
+            return
+
+        # Ensure we only expand/collapse directories
+        if self.model().isDir(index):
+            self.clicked_folder_index = index
+            # Instead of directly toggling, use the expand method which checks for read access
+            self.expand(index) if not self.isExpanded(index) else self.collapse(index)
         else:
             super(CustomeTreeView, self).mousePressEvent(event)
 
