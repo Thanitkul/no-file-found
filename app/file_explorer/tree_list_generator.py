@@ -7,7 +7,9 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox,
+
+# Import the required modules
+from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox, QFileSystemModel,
                             QHBoxLayout, QPushButton, QScrollArea, QLabel)
 from qtpy.QtGui import QIcon
 from qtpy.QtCore import Qt
@@ -15,7 +17,7 @@ import os
 
 # Import the file attribute view
 from .file_attribute_view import FileAttributeView
-from .custom_tree_view import CustomeTreeView, CustomFileSystemModel
+from .custom_tree_view import CustomeTreeView
     
 class TreeListGenerator(QMainWindow):
     '''
@@ -75,7 +77,7 @@ class TreeListGenerator(QMainWindow):
         self.treeView.setFixedWidth(250)
         # Create a model for the file system
         # Value stroing os data
-        self.model = CustomFileSystemModel(self.treeView)
+        self.model = QFileSystemModel(self.treeView)
         self.model.setRootPath(startingPath)
         self.treeView.setModel(self.model)
 
