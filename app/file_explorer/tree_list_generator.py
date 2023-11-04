@@ -83,14 +83,9 @@ class TreeListGenerator(QMainWindow):
 
     def openFolder(self, index):
         if self.displayingFile is not None:
-            # Assuming splitter is your QSplitter instance
-            latestWidget = self.splitter.widget(
-                self.splitter.count() - 1)  # Get the latest widget
             # Remove the latest widget
-            self.splitter.replaceWidget(self.splitter.count() - 1, None)
-            latestWidget.deleteLater()  # Delete the widget to release its resources
+            self.removeLatestWidgetFromSplitter()
             self.displayingFile = None
-            self.treeViewList.pop()
         # Event handler for when a folder is opened (expanded)
         folderPath = self.model.filePath(index)
 
@@ -117,14 +112,9 @@ class TreeListGenerator(QMainWindow):
             filePath = self.model.filePath(index)
             print('display1',filePath, self.displayingFile)
             if filePath == self.displayingFile:
-                # Assuming splitter is your QSplitter instance
-                latestWidget = self.splitter.widget(
-                    self.splitter.count() - 1)  # Get the latest widget
                 # Remove the latest widget
-                self.splitter.replaceWidget(self.splitter.count() - 1, None)
-                latestWidget.deleteLater()  # Delete the widget to release its resources
+                self.removeLatestWidgetFromSplitter()
                 self.displayingFile = None
-                self.treeViewList.pop()
 
             else:
                 if self.displayingFile is None:
@@ -142,13 +132,8 @@ class TreeListGenerator(QMainWindow):
                     self.splitter.addWidget(self.attributeTable)
                     self.treeViewList.append(self.attributeTable)
                 else:
-                    # Assuming splitter is your QSplitter instance
-                    latestWidget = self.splitter.widget(
-                        self.splitter.count() - 1)  # Get the latest widget
                     # Remove the latest widget
-                    self.splitter.replaceWidget(self.splitter.count() - 1, None)
-                    latestWidget.deleteLater()  # Delete the widget to release its resources
-                    self.treeViewList.pop()
+                    self.removeLatestWidgetFromSplitter()
                     # Get and display file attributes
                     attributes = {
                         'File Name': filePath.split('/')[-1],
@@ -200,10 +185,7 @@ class TreeListGenerator(QMainWindow):
         # Event handler for when the back button is clicked
         # Remove the latest widget
         if self.splitter.count() > 1:
-            self.splitter.replaceWidget(self.splitter.count() - 1, None)
-            # Delete the widget to release its resources
-            self.splitter.widget(self.splitter.count() - 1).deleteLater()
-            self.treeViewList.pop()
+            self.removeLatestWidgetFromSplitter()
     
     def removeLatestWidgetFromSplitter(self):
         # Remove the latest widget
