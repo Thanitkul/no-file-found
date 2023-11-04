@@ -8,18 +8,21 @@ contain file inside that folder appear next to the previous tree list.
 Created by Mo, 12 October, 2023.
 '''
 from qtpy.QtWidgets import (QMainWindow, QTreeView, QFileSystemModel, QSplitter,
-                            QHBoxLayout, QPushButton, QScrollArea, QStyleOptionViewItem, QMessageBox, QLabel)
-from qtpy.QtGui import QIcon, QBrush, QPalette, QColor
+                            QHBoxLayout, QPushButton, QScrollArea, QStyleOptionViewItem, 
+                            QMessageBox, QLabel)
+from qtpy.QtGui import QIcon, QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
+
+# Import the file attribute view
 from .file_attribute_view import FileAttributeView
     
 class TreeListGenerator(QMainWindow):
-
     def __init__(self):
         super().__init__()
         self.splitter = QSplitter(Qt.Horizontal)
         self.treeViews = QScrollArea()
+        self.treeViews.setStyleSheet("QScrollArea { padding: 5px; border: none;}")
         self.treeViews.setWidgetResizable(True)
         self.treeViews.setWidget(self.splitter)
         
@@ -185,6 +188,7 @@ class TreeListGenerator(QMainWindow):
         self.backButton.setIcon(icon)
         # Set the size of the circular button
         self.backButton.setFixedSize(30, 30)
+        self.backButton.setFocusPolicy(Qt.NoFocus)
         self.backButton.setStyleSheet(
             "QPushButton { border: none; border-radius: 15px; background-color: #ffffff; }"
             "QPushButton:hover { background-color: #005A9D; }"
@@ -229,12 +233,17 @@ class CustomeTreeView(QTreeView):
                 background: transparent;
             }
             QTreeView::item:hover {
-                background: #E0E0E0;  /* or any light color you prefer for hover */
+                background: #E0E0E0 !important;
             }
             QTreeView::item {
                 color: black;
                 outline: none !important;
-            }               
+            }
+            QTreeView::focus {
+                border: none !important;
+                outline: none !important;
+            }
+            QTreeView { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px; }        
         """)
 
     def drawRow(self, painter, options, index):
@@ -243,7 +252,7 @@ class CustomeTreeView(QTreeView):
 
         if index == self.clicked_folder_index:
             painter.save()
-            color = QColor('red')
+            color = QColor('#0067B4')
             painter.setBrush(color)
             painter.setPen(Qt.NoPen)
             painter.drawRect(options.rect)
@@ -251,7 +260,20 @@ class CustomeTreeView(QTreeView):
 
             # Set the text color to black
             options.palette.setColor(QPalette.Text, Qt.black)
+                # If the item is selected, change the background to blue
+        if self.selectionModel().isSelected(index):
+            painter.save()
+            color = QColor('#0067B4')  # Blue color
+            painter.setBrush(color)
+            painter.setPen(Qt.NoPen)
+            painter.drawRect(options.rect)
+            painter.restore()
 
+            # Set the text color to white for better contrast
+            options.palette.setColor(QPalette.Text, Qt.white)
+        else:
+            # If the item is not selected, keep the original background
+            options.palette.setColor(QPalette.Text, Qt.black)
         # Now let the base class draw the row with the possibly modified options
         super().drawRow(painter, original_options, index)
 
@@ -280,6 +302,7 @@ class CustomeTreeView(QTreeView):
     def expand(self, index):
         # Check if the directory can be accessed before expanding it
         if not self.isDirReadable(index):
+            self.clearHighlight()
             QMessageBox.warning(self, "Access Denied", "You don't have permission to access this folder.")
             return
         # Check if the directory is empty
