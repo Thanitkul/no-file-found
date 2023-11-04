@@ -12,7 +12,7 @@ from qtpy.QtGui import QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
 
-class CustomeTreeView(QTreeView):
+class CustomTreeView(QTreeView):
     '''
     Initialize the custom tree view, set custom tree view's stylesheet
     and forbid expanding folder when clicking on it.
@@ -20,7 +20,7 @@ class CustomeTreeView(QTreeView):
         None
     '''
     def __init__(self, parent=None):
-        super(CustomeTreeView, self).__init__(parent)
+        super(CustomTreeView, self).__init__(parent)
         # Set folder to collapse immediately if get expanded
         self.expanded.connect(self.collapseImmediately)
 
@@ -143,7 +143,7 @@ class CustomeTreeView(QTreeView):
         else:
             # Set the clicked file index
             self.clicked_file_index = index
-            super(CustomeTreeView, self).mousePressEvent(event)
+            super(CustomTreeView, self).mousePressEvent(event)
 
     '''
     Expand the folder and check if the folder can be accessed.
@@ -159,7 +159,7 @@ class CustomeTreeView(QTreeView):
             # Show a warning message
             QMessageBox.warning(self, "Access Denied", "You don't have permission to access this folder.")
             return
-        super(CustomeTreeView, self).expand(index)
+        super(CustomTreeView, self).expand(index)
 
     '''
     Check if the folder can be accessed.
