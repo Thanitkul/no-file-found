@@ -17,7 +17,7 @@ import os
 
 # Import the file attribute view
 from .file_attribute_view import FileAttributeView
-from .custom_tree_view import customeTreeView
+from .custom_tree_view import CustomTreeView
     
 class TreeListGenerator(QMainWindow):
     '''
@@ -73,7 +73,7 @@ class TreeListGenerator(QMainWindow):
         self.currentPath = startingPath
         # Create a new file tree list
         # Widget to display the file tree list
-        self.treeView = customeTreeView(self)
+        self.treeView = CustomTreeView(self)
         self.treeView.setFixedWidth(250)
         # Create a model for the file system
         # Value stroing os data
