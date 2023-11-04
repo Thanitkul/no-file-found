@@ -9,7 +9,6 @@ class CustomeTreeView(QTreeView):
         super(CustomeTreeView, self).__init__(parent)
         self.expanded.connect(self.collapseImmediately)
         self.clicked_folder_index = QModelIndex()  # No index at start
-        self.clicked_file_index = QModelIndex()
         
         # Set the stylesheet to have a transparent selection background color
         self.setStyleSheet("""
@@ -45,13 +44,6 @@ class CustomeTreeView(QTreeView):
             # Set the text color to black
             options.palette.setColor(QPalette.Text, Qt.black)
                 # If the item is selected, change the background to blue
-        if self.selectionModel().isSelected(index):
-            painter.save()
-            color = QColor('#0067B4')  # Blue color
-            painter.setBrush(color)
-            painter.setPen(Qt.NoPen)
-            painter.drawRect(options.rect)
-            painter.restore()
 
             # Set the text color to white for better contrast
             options.palette.setColor(QPalette.Text, Qt.white)
@@ -73,16 +65,6 @@ class CustomeTreeView(QTreeView):
         if not index.isValid():
             # If the click is on empty space, do nothing
             return
-        if self.model().hasChildren(index):
-            # If it's a folder, toggle expansion upon single click
-            if self.isExpanded(index):
-                self.collapse(index)
-            else:
-                self.expand(index)
-            self.clicked_folder_index = index
-            self.update(index)  # Redraw the item
-        else:
-            super(CustomeTreeView, self).mousePressEvent(event)
 
         # Ensure we only expand/collapse directories
         if self.model().isDir(index):
@@ -92,18 +74,11 @@ class CustomeTreeView(QTreeView):
         else:
             super(CustomeTreeView, self).mousePressEvent(event)
 
-
-
     def expand(self, index):
         # Check if the directory can be accessed before expanding it
         if not self.isDirReadable(index):
             self.clearFolderHighlight()
             QMessageBox.warning(self, "Access Denied", "You don't have permission to access this folder.")
-            return
-        # Check if the directory is empty
-        if not self.model().hasChildren(index):
-            QMessageBox.information(self, "Empty Folder", "This folder is empty.")
-            self.collapse(index)
             return
         super(CustomeTreeView, self).expand(index)
 

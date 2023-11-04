@@ -7,7 +7,7 @@ contain file inside that folder appear next to the previous tree list.
 
 Created by Mo, 12 October, 2023.
 '''
-from qtpy.QtWidgets import (QMainWindow, QSplitter,
+from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox,
                             QHBoxLayout, QPushButton, QScrollArea, QLabel)
 from qtpy.QtGui import QIcon
 from qtpy.QtCore import Qt
@@ -89,7 +89,7 @@ class TreeListGenerator(QMainWindow):
             # Remove the latest widget
             self.removeLatestWidgetFromSplitter()
             self.displayingFile = None
-            
+            # self.treeView.clearSelection()
 
         # Get the file path from the model
         folderPath = self.model.filePath(index)
@@ -110,18 +110,26 @@ class TreeListGenerator(QMainWindow):
             self.treeViewList.pop()
         
         # Check if the directory is empty
-        if not os.listdir(folderPath):
-            # Create a label with the message
-            emptyLabel = QLabel("No files")
-            emptyLabel.setAlignment(Qt.AlignCenter)
-            emptyLabel.setFixedWidth(250)
-            emptyLabel.setStyleSheet("QLabel { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;}")
-            # Add the label to the splitter
-            self.splitter.addWidget(emptyLabel)
-            # Add the label to the tree view list for management
-            self.treeViewList.append(emptyLabel)
-            self.scrollRight()
+        try :
+            if not os.listdir(folderPath):
+                # Create a label with the message
+                emptyLabel = QLabel("No files")
+                emptyLabel.setAlignment(Qt.AlignCenter)
+                emptyLabel.setFixedWidth(250)
+                emptyLabel.setStyleSheet("QLabel { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px;}")
+
+                # Add the label to the splitter
+                self.splitter.addWidget(emptyLabel)
+
+                # Add the label to the tree view list for management
+                self.treeViewList.append(emptyLabel)
+                self.scrollRight()
+                return
+        except (FileNotFoundError, PermissionError):
+            self.treeViewList[-1].clearFolderHighlight()
+            QMessageBox.warning(self, "Access Denied", "You don't have permission to access this folder.")
             return
+
         # Now add the new tree list for the opened folder
         self.addFileTreeList(self.splitter, folderPath)
         print(f"Folder opened: {folderPath}")
