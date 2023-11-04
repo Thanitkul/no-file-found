@@ -335,6 +335,10 @@ class TreeListGenerator(QMainWindow):
             # Now delete the widget
             widget_to_remove.deleteLater()
 
-
+    '''
+    Get the current path
+    Arguments:
+        None
+    '''
     def getCurrentPath(self):
         return self.currentPath
