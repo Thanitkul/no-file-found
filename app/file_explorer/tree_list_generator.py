@@ -97,7 +97,8 @@ class TreeListGenerator(QMainWindow):
 
         # Remove every tree list after the current one
         for i in range(len(self.treeViewList) - 1, position, -1):
-            self.splitter.replaceWidget(i, None)
+            widget_to_remove = self.splitter.widget(i)
+            widget_to_remove.hide()
             self.treeViewList[i].deleteLater()
             self.treeViewList.pop()
 
@@ -184,18 +185,22 @@ class TreeListGenerator(QMainWindow):
     def goBack(self):
         # Event handler for when the back button is clicked
         # Remove the latest widget
-        if self.splitter.count() > 1:
-            self.removeLatestWidgetFromSplitter()
-            # If there's at least one tree view left, clear its highlight
-            if self.treeViewList:
-                self.treeViewList[-1].clearHighlight()
-    
+        self.removeLatestWidgetFromSplitter()
+        # If there's at least one tree view left, clear its highlight
+        if self.treeViewList:
+            self.treeViewList[-1].clearHighlight()
+
     def removeLatestWidgetFromSplitter(self):
-        # Remove the latest widget
-        self.splitter.replaceWidget(self.splitter.count() - 1, None)
-        # Delete the widget to release its resources
-        self.splitter.widget(self.splitter.count() - 1).deleteLater()
-        self.treeViewList.pop()
+        # Check if there are widgets in the splitter to remove
+        if self.splitter.count() > 1:
+            # Get the last widget in the splitter
+            widget_to_remove = self.splitter.widget(self.splitter.count() - 1)
+            # Hide the widget before removing it from the splitter
+            widget_to_remove.hide()
+            # Remove the widget from the tree view list
+            self.treeViewList.pop()
+            # Now delete the widget
+            widget_to_remove.deleteLater()
 
 class CustomeTreeView(QTreeView):
     def __init__(self, parent=None):
