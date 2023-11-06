@@ -21,23 +21,21 @@ class FileTreeViewer(QWidget):
         self.setGeometry(100, 100, 800, 600)
 
         self.treeListGenerator = TreeListGenerator()
-        self.fileSearchEngine = FileSearchEngine()
+        self.fileSearchEngine = FileSearchEngine(currentPath=self.treeListGenerator.getCurrentPath)
         self.searchHistoryTable = SearchHistoryTable()
-    
+
         centralWidget = QWidget()
         centralLayout = QVBoxLayout(centralWidget)
         centralLayout.addWidget(self.treeListGenerator.backButton)
         centralLayout.addWidget(self.fileSearchEngine.searchBar)
-        centralLayout.addWidget(self.treeListGenerator.splitter)
+        centralLayout.addWidget(self.treeListGenerator.treeViews)
         centralLayout.addWidget(self.fileSearchEngine.tree_widget)
         centralLayout.addWidget(self.searchHistoryTable.historyButton)
         
-        scrollArea = QScrollArea()
-        scrollArea.setWidgetResizable(True)
-        scrollArea.setWidget(centralWidget)
+
 
         mainLayout = QVBoxLayout(self)
-        mainLayout.addWidget(scrollArea)
+        mainLayout.addWidget(centralWidget)
 
 
 if __name__ == "__main__":

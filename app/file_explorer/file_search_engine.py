@@ -10,8 +10,8 @@ from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVB
 from ctypes import *
 from qtpy.QtGui import QStandardItem, QIcon, QStandardItemModel
 import json
-from app.os.file_search_temp import search_directory
 import os
+from app.os.file_searcher import FileSearcher
 from qtpy.QtCore import Qt
 import sys
 
@@ -41,25 +41,19 @@ class CustomFileTreeWidget(QTreeWidget):
 
 
 class FileSearchEngine(QMainWindow):
-    def __init__(self):
+    def __init__(self, currentPath: callable):
         super().__init__()
         self.searchBar = QLineEdit(self)
         self.searchBar.setPlaceholderText("Search...")
-        # self.file_list_indexer = CDLL("./app/os/file_list_indexer.so")
-        # self.file_list_indexer.FileSearcher.restype = c_char_p
         self.searchBar.returnPressed.connect(self.search_folders)
         self.tree_widget = CustomFileTreeWidget()
         self.tree_widget.setHeaderLabel("Search Results")
-
+        self.currentPath = currentPath
+        self.is_searching = False
     
     def search_folders(self):
-        print("i been ran")
-        # self.search()
         search_path = self.searchBar.text()
-        # parent_path = self.windowFilePath()
-        parent_path = "/home/pooh/Downloads"
-        print(parent_path)
-        result = search_directory(parent_path,search_path)
+        result = FileSearcher(self.currentPath(),search_path)
         print(result)
         if result == None:
             print("no file not found")
@@ -68,4 +62,7 @@ class FileSearchEngine(QMainWindow):
         self.tree_widget.clear()  # Clear previous results
         for i in result:
             print(i)
-            self.tree_widget.add_directory(i,self.tree_widget.invisibleRootItem())
+            self.tree_widget.add_directory(i['path'],self.tree_widget.invisibleRootItem())
+
+    def isSearching(self):
+        return self.is_searching
