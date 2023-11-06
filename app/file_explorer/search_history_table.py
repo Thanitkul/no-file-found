@@ -9,10 +9,10 @@ Created by Korn Visaltanachoti (Bank), 14 October 2023
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
 import csv
 from tkinter import filedialog
-from ..history.CSVexporter import exportAsCSV
+from ..history.csv_exporter import exportAsCSV
 
 tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
-csvColumnName = ['fileName', 'filePath', 'fileSize', 'fileLastModified', 'searchStartingDirectory', 'searchTerm', 'searchDate']
+
 
 searchHistoryData = []
 
@@ -28,10 +28,11 @@ class SearchHistoryTable:
         self.exportButton = QPushButton("Export as CSV")
         # Connects the button to the export function
         # lambda is used otherwise the function will be called when the button is created
-        self.exportButton.clicked.connect(lambda: exportAsCSV(csvColumnName, searchHistoryData))
+        self.exportButton.clicked.connect(lambda: exportAsCSV(searchHistoryData))
         self.tableWidget = QTableWidget()
         self.initUI()
     
+    # Creates the search history window
     def initUI(self):
         self.searchTableWindow = QMainWindow()
         self.searchTableWindow.setWindowTitle("Search History")
