@@ -301,9 +301,9 @@ class TreeListGenerator(QMainWindow):
         # Connect the back button to an event handler
         self.backButton.clicked.connect(self.goBack)
 
-        self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
-        self.layout.addSpacing(10)
-        self.setLayout(self.layout)
+        # self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
+        # self.layout.addSpacing(10)
+        # self.setLayout(self.layout)
 
     '''
     Event handler for when the back button is clicked

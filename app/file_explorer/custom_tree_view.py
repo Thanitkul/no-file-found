@@ -38,7 +38,7 @@ class CustomTreeView(QTreeView):
 
         # Set the stylesheet with the appropriate background color
         self.setStyleSheet(f"""
-            QTreeView {{ border: 1px solid #e0e0e0; border-radius: 2px; }}
+            QTreeView {{ border-radius: 2px; }}
             QTreeView::item:selected {{ background: transparent; }}
             QTreeView::item:hover {{ background: #E0E0E0 !important; }}
             QTreeView::item {{ color: black; outline: none !important; }}
