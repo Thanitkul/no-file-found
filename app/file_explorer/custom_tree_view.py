@@ -34,6 +34,11 @@ class CustomTreeView(QTreeView):
         # Update stylesheet based on system theme
         self.updateStylesheet()
 
+    '''
+    Update the stylesheet based on system theme.
+    Arguments:
+        None
+    '''
     def updateStylesheet(self):
 
         # Set the stylesheet with the appropriate background color
