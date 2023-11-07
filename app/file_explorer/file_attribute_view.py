@@ -33,9 +33,8 @@ class FileAttributeView(QMainWindow):
         self.attributeTable.setStyleSheet(
             """
             QTableWidget { 
-                background: #ffffff; 
                 border: 1px solid #e0e0e0; 
-                border-radius: 5px; 
+                border-radius: 2px; 
             }
             QTableWidget::item {
                 padding: 5px; /* Padding inside cells */
