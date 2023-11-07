@@ -41,7 +41,7 @@ class CustomFileTreeWidget(QTreeWidget):
 
 
 class FileSearchEngine(QMainWindow):
-    def __init__(self, treeListInstance: callable, collaps: callable):
+    def __init__(self, treeListInstance: callable, collapsTreeViews: callable):
         super().__init__()
         self.searchBar = QLineEdit(self)
         self.searchBar.setPlaceholderText("Search...")
@@ -50,7 +50,7 @@ class FileSearchEngine(QMainWindow):
         self.tree_widget.setHeaderLabel("Search Results")
         self.treeListInstance = treeListInstance
         self.is_searching = False
-        self.collaps = collaps
+        self.collapsTreeViews = collapsTreeViews
     
     def search_folders(self):
         search_path = self.searchBar.text()
@@ -65,5 +65,9 @@ class FileSearchEngine(QMainWindow):
             print(i)
             self.tree_widget.add_directory(i['path'],self.tree_widget.invisibleRootItem())
         
-        self.collaps(self.treeListInstance.treeViews)
+        self.collapsTreeViews(self.treeListInstance.treeViews)
 
+    def remove_widget(self):
+        if self.tree_widget is not None:
+            self.tree_widget.setParent(None)
+            self.tree_widget = None

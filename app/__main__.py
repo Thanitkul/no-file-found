@@ -20,8 +20,8 @@ class FileTreeViewer(QWidget):
         self.setWindowTitle("File Tree Viewer")
         self.setGeometry(100, 100, 800, 600)
 
-        self.treeListGenerator = TreeListGenerator()
-        self.fileSearchEngine = FileSearchEngine(treeListInstance=self.treeListGenerator, collaps=self.remove)
+        self.treeListGenerator = TreeListGenerator(addTreeViews=self.add)
+        self.fileSearchEngine = FileSearchEngine(treeListInstance=self.treeListGenerator, collapsTreeViews=self.remove)
         self.searchHistoryTable = SearchHistoryTable()
 
         self.centralWidget = QWidget()
@@ -29,7 +29,6 @@ class FileTreeViewer(QWidget):
         self.centralLayout.addWidget(self.treeListGenerator.backButton)
         self.centralLayout.addWidget(self.fileSearchEngine.searchBar)
         self.centralLayout.addWidget(self.treeListGenerator.treeViews)
-        self.centralLayout.addWidget(self.fileSearchEngine.tree_widget)
         self.centralLayout.addWidget(self.searchHistoryTable.historyButton)
         
 
@@ -40,6 +39,17 @@ class FileTreeViewer(QWidget):
 
     def remove(self, widget):
         self.centralLayout.removeWidget(widget)
+        # self.centralLayout.addWidget(self.fileSearchEngine.tree_widget)
+
+
+
+    def add(self):
+        # print("test/")
+        self.centralLayout.removeWidget(self.fileSearchEngine.tree_widget)
+        # print("ok")
+        self.centralLayout.addWidget(self.treeListGenerator.treeViews)
+        self.fileSearchEngine.remove_widget
+
 
 
 

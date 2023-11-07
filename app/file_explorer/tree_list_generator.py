@@ -25,7 +25,7 @@ class TreeListGenerator(QMainWindow):
     Arguments:
         None
     '''
-    def __init__(self):
+    def __init__(self, addTreeViews: callable):
         super().__init__()
         # List storing the tree views
         self.splitter = QSplitter(Qt.Horizontal)
@@ -35,6 +35,8 @@ class TreeListGenerator(QMainWindow):
         # Set the scroll area as the widget to display
         self.treeViews.setWidgetResizable(True)
         self.treeViews.setWidget(self.splitter)
+        
+        self.addTreeViews = addTreeViews
         
         # Create a horizontal layout for the navigation bar
         # Container for the back button
@@ -300,6 +302,7 @@ class TreeListGenerator(QMainWindow):
 
         # Connect the back button to an event handler
         self.backButton.clicked.connect(self.goBack)
+        self.backButton.clicked.connect(self.addTreeView)
 
         self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
         self.layout.addSpacing(10)
@@ -342,3 +345,11 @@ class TreeListGenerator(QMainWindow):
     '''
     def getCurrentPath(self):
         return self.currentPath
+
+    '''
+    Add tree view back to the main object if not existed
+    Arguments:
+        None
+    '''
+    def addTreeView(self):
+        self.addTreeViews()
