@@ -11,12 +11,13 @@ import csv
 from tkinter import filedialog
 from ..history.csv_exporter import exportAsCSV
 
+# Defines the column names for the search history table
 tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
 
-
+# List for storing the search history data
 searchHistoryData = []
 
-
+# This class creates the search history table
 class SearchHistoryTable:
     def __init__(self):
         super().__init__()
@@ -52,6 +53,7 @@ class SearchHistoryTable:
         self.tableWidget.setRowCount(row)
         self.tableWidget.setColumnCount(col)
         self.tableWidget.setHorizontalHeaderLabels(tableColumnName)
+        # Adds the data to the table
         for r in range(row):
             for c in range(col):
                 item = QTableWidgetItem(searchHistoryData[r][c])
