@@ -7,7 +7,7 @@ Created by Mo, 5 November, 2023.
 '''
 
 # Import from required library
-from qtpy.QtWidgets import (QTreeView, QStyleOptionViewItem, QMessageBox, QFileSystemModel)
+from qtpy.QtWidgets import (QTreeView, QStyleOptionViewItem, QMessageBox, QFileSystemModel, QApplication)
 from qtpy.QtGui import QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os
@@ -31,23 +31,18 @@ class CustomTreeView(QTreeView):
         # Value to keep track of the clicked file index in this tree view
         self.clicked_file_index = QModelIndex()
         
-        # Set the stylesheet for the tree view
-        self.setStyleSheet("""
-            QTreeView::item:selected {
-                background: transparent;
-            }
-            QTreeView::item:hover {
-                background: #E0E0E0 !important;
-            }
-            QTreeView::item {
-                color: black;
-                outline: none !important;
-            }
-            QTreeView::focus {
-                border: none !important;
-                outline: none !important;
-            }
-            QTreeView { background: #ffffff; border: 1px solid #e0e0e0; border-radius: 5px; }        
+        # Update stylesheet based on system theme
+        self.updateStylesheet()
+
+    def updateStylesheet(self):
+
+        # Set the stylesheet with the appropriate background color
+        self.setStyleSheet(f"""
+            QTreeView {{ border-radius: 2px; }}
+            QTreeView::item:selected {{ background: transparent; }}
+            QTreeView::item:hover {{ background: #E0E0E0 !important; }}
+            QTreeView::item {{ outline: none !important; }}
+            QTreeView::focus {{ border: none !important; outline: none !important; }}
         """)
 
     '''

@@ -163,7 +163,8 @@ class TreeListGenerator(QMainWindow):
                 self.scrollRight()
                 return
         # If the user doesn't have permission to access the folder
-        except (FileNotFoundError, PermissionError):
+        except (Exception):
+            print(Exception)
             # Remove the highlight from the folder
             self.treeViewList[-1].clearFolderHighlight()
             # Show a warning message
@@ -301,9 +302,9 @@ class TreeListGenerator(QMainWindow):
         # Connect the back button to an event handler
         self.backButton.clicked.connect(self.goBack)
 
-        self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
-        self.layout.addSpacing(10)
-        self.setLayout(self.layout)
+        # self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
+        # self.layout.addSpacing(10)
+        # self.setLayout(self.layout)
 
     '''
     Event handler for when the back button is clicked
