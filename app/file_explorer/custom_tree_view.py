@@ -41,7 +41,7 @@ class CustomTreeView(QTreeView):
             QTreeView {{ border-radius: 2px; }}
             QTreeView::item:selected {{ background: transparent; }}
             QTreeView::item:hover {{ background: #E0E0E0 !important; }}
-            QTreeView::item {{ color: black; outline: none !important; }}
+            QTreeView::item {{ outline: none !important; }}
             QTreeView::focus {{ border: none !important; outline: none !important; }}
         """)
 
