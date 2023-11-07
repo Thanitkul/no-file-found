@@ -21,21 +21,26 @@ class FileTreeViewer(QWidget):
         self.setGeometry(100, 100, 800, 600)
 
         self.treeListGenerator = TreeListGenerator()
-        self.fileSearchEngine = FileSearchEngine(currentPath=self.treeListGenerator.getCurrentPath)
+        self.fileSearchEngine = FileSearchEngine(treeListInstance=self.treeListGenerator, collaps=self.remove)
         self.searchHistoryTable = SearchHistoryTable()
 
-        centralWidget = QWidget()
-        centralLayout = QVBoxLayout(centralWidget)
-        centralLayout.addWidget(self.treeListGenerator.backButton)
-        centralLayout.addWidget(self.fileSearchEngine.searchBar)
-        centralLayout.addWidget(self.treeListGenerator.treeViews)
-        centralLayout.addWidget(self.fileSearchEngine.tree_widget)
-        centralLayout.addWidget(self.searchHistoryTable.historyButton)
+        self.centralWidget = QWidget()
+        self.centralLayout = QVBoxLayout(self.centralWidget)
+        self.centralLayout.addWidget(self.treeListGenerator.backButton)
+        self.centralLayout.addWidget(self.fileSearchEngine.searchBar)
+        self.centralLayout.addWidget(self.treeListGenerator.treeViews)
+        self.centralLayout.addWidget(self.fileSearchEngine.tree_widget)
+        self.centralLayout.addWidget(self.searchHistoryTable.historyButton)
         
 
 
         mainLayout = QVBoxLayout(self)
-        mainLayout.addWidget(centralWidget)
+        mainLayout.addWidget(self.centralWidget)
+
+
+    def remove(self, widget):
+        self.centralLayout.removeWidget(widget)
+
 
 
 if __name__ == "__main__":
