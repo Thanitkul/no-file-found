@@ -11,7 +11,7 @@ Created by Mo, 12 October, 2023.
 # Import the required modules
 from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox,
                             QHBoxLayout, QPushButton, QScrollArea, QLabel)
-from qtpy.QtGui import QIcon
+from qtpy.QtGui import QFont
 from qtpy.QtCore import Qt
 import os
 
@@ -272,19 +272,14 @@ class TreeListGenerator(QMainWindow):
         None
     '''
     def backButton(self):
-        # Create a back button
-        self.backButton = QPushButton()
+        self.backButton = QPushButton('↩')
 
-        # Get the absolute path to the directory where your script is located
-        script_directory = os.path.dirname(os.path.abspath(__file__))
+        # Create a QFont object with a desired size
+        font = QFont()
+        font.setPointSize(20)  # You can adjust the size as needed
 
-        # Specify the relative path to your SVG image file
-        image_path = os.path.join(script_directory, "..",
-                                "assets", "icons", "back_button.svg")
-        
-        # Create a QIcon using the image_path
-        icon = QIcon(image_path)
-        self.backButton.setIcon(icon)
+        # Set the font to the button
+        self.backButton.setFont(font)
 
         # Set the size of the circular button
         self.backButton.setFixedSize(30, 30)
