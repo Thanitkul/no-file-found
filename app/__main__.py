@@ -8,9 +8,9 @@ Created by Mo, 30 September, 2023.
 import sys
 from qtpy.QtWidgets import QApplication, QWidget, QVBoxLayout, QVBoxLayout, QScrollArea
 
-from .file_explorer.tree_list_generator import TreeListGenerator
-from .file_explorer.file_search_engine import FileSearchEngine
-from .file_explorer.search_history_table import SearchHistoryTable
+from app.file_explorer.tree_list_generator import TreeListGenerator
+from app.file_explorer.file_search_engine import FileSearchEngine
+from app.file_explorer.search_history_table import SearchHistoryTable
 
 
 class FileTreeViewer(QWidget):
@@ -32,8 +32,6 @@ class FileTreeViewer(QWidget):
         centralLayout.addWidget(self.fileSearchEngine.tree_widget)
         centralLayout.addWidget(self.searchHistoryTable.historyButton)
         
-
-
         mainLayout = QVBoxLayout(self)
         mainLayout.addWidget(centralWidget)
 
