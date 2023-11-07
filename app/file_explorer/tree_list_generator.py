@@ -163,7 +163,8 @@ class TreeListGenerator(QMainWindow):
                 self.scrollRight()
                 return
         # If the user doesn't have permission to access the folder
-        except (FileNotFoundError, PermissionError):
+        except (Exception):
+            print(Exception)
             # Remove the highlight from the folder
             self.treeViewList[-1].clearFolderHighlight()
             # Show a warning message
