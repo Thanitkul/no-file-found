@@ -30,50 +30,39 @@ from typing import List, Dict
 #   is_wildcard: boolean to indicate whether the search string is wildcard or not
 def translate(pattern: str, is_wildcard: bool) -> str:
     if not is_wildcard:
-        # For non-wildcard, escape the pattern and return it for case-insensitive search
         return re.escape(pattern)
     else:
-        # If the search string is wildcard, translate the search string to regex pattern
-        i, n = 0, len(pattern)
         res = ''
-        # Loop through the search string
+        i, n = 0, len(pattern)
         while i < n:
-            # Get the current character
             char = pattern[i]
-            # Increment the index
             i += 1
-            # If the current character is *, add .* to the pattern
             if char == '*':
-                res = res + '.*'
-            # If the current character is ?, add [a-zA-Z] to the pattern
+                res += '.*'
             elif char == '?':
-                res = res + '[a-zA-Z]'
-            # If the current character is [, add [ to the pattern
+                res += '[a-zA-Z]'
             elif char == '[':
                 j = i
                 if j < n and pattern[j] == '!':
+                    res += '[^'
                     j += 1
+                else:
+                    res += '['
                 if j < n and pattern[j] == ']':
                     j += 1
                 while j < n and pattern[j] != ']':
                     j += 1
                 if j >= n:
-                    res = res + '\\['
+                    res += '\\['
                 else:
-                    stuff = pattern[i:j].replace('\\', '\\\\')
+                    res += pattern[i:j] + ']'
                     i = j + 1
-                    if stuff[0] == '!':
-                        stuff = '^' + stuff[1:]
-                    elif stuff[0] == '^':
-                        stuff = '\\' + stuff
-                    res = '%s[%s]' % (res, stuff)
-            # If the current character is !, add [^a-zA-Z] to the pattern
             elif char == '#':
-                res = res + '[0-9]'
-            # If the current character is -, add - to the pattern
+                res += '[0-9]'
             else:
-                res = res + re.escape(char)
-        return f'(?i){res}', True
+                res += re.escape(char)
+        return f'(?i){res}'
+
 
 # function FileSearcher (to be called from file_search_engine.py)
 # This function search for files and their path in the root directory and its subdirectories given the starting path and search string. 
