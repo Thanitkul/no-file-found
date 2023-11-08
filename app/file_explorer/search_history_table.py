@@ -10,9 +10,10 @@ from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidget
 import csv
 from tkinter import filedialog
 from ..history.csv_exporter import exportAsCSV
+import datetime
 
 # Defines the column names for the search history table
-tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search date']
+tableColumnName = ['File name', 'File path', 'File size', 'File last modified', 'Search starting directory', 'Search term', 'Search datetime']
 
 # List for storing the search history data
 searchHistoryData = []
@@ -83,5 +84,21 @@ class SearchHistoryTable:
 #   searchTerm: the search term
 #   searchDate: the date that the search was performed
 def saveHistory(fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate):
-    print(searchHistoryData)
+    print(fileSize, fileLastModified, searchDate)
+    if fileSize < 1024:
+        fileSize = str(fileSize) + " B"
+    elif fileSize < 1048576:
+        fileSize = str(round(fileSize/1024, 2)) + " KB"
+    elif fileSize < 1073741824:
+        fileSize = str(round(fileSize/1048576, 2)) + " MB"
+    else:
+        fileSize = str(round(fileSize/1073741824, 2)) + " GB"
+    
+    # Convert fileLastModified and searchDate from unix timestamp into a date format
+
+    # Convert the Unix timestamp to a datetime object
+    dt_object = datetime.datetime.utcfromtimestamp(fileLastModified)
+    fileLastModified = dt_object.strftime('%Y-%m-%d %H:%M:%S')
+    dt_object = datetime.datetime.utcfromtimestamp(searchDate)
+    searchDate = dt_object.strftime('%Y-%m-%d %H:%M:%S')
     searchHistoryData.append([fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate])
