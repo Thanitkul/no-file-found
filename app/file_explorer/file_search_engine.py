@@ -60,17 +60,17 @@ class FileSearchEngine(QMainWindow):
         print(self.currentPath())
         result = FileSearcher(self.currentPath(),search_path)
         print(result)
+        self.tree_widget.clear()  # Clear previous results
         if len(result) == 0:
             print("no file not found")
             self.tree_widget.add_nofilefound(self.tree_widget.invisibleRootItem())
             return
         print("routing finish")
-        self.tree_widget.clear()  # Clear previous results
         for i in result:
             self.tree_widget.add_directory(i['path'],self.tree_widget.invisibleRootItem())
             if i != None:
                 saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=os.path.getmtime(i["path"]), 
-                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=date.today(), fileSize=os.path.getsize(i["path"]))
+                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=str(date.today()), fileSize=os.path.getsize(i["path"]))
             # print('i been ran')
     
     def isSearching(self):
