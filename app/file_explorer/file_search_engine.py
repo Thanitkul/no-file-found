@@ -11,7 +11,8 @@ from qtpy.QtGui import QStandardItem, QIcon, QStandardItemModel
 import os
 from app.os.file_searcher import FileSearcher
 from qtpy.QtCore import Qt
-from datetime import date
+from datetime import date, datetime
+import time
 from .search_history_table import saveHistory
 
 
@@ -69,8 +70,8 @@ class FileSearchEngine(QMainWindow):
         for i in result:
             self.tree_widget.add_directory(i['path'],self.tree_widget.invisibleRootItem())
             if i != None:
-                saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=os.path.getmtime(i["path"]), 
-                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=str(date.today()), fileSize=os.path.getsize(i["path"]))
+                saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=time.strftime('%m/%d/%Y', time.gmtime(os.path.getmtime(i['path']))), 
+                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=str(date.today()), fileSize=time.strftime('%m/%d/%Y', time.gmtime(os.path.getsize(i["path"]))))
             # print('i been ran')
     
     def isSearching(self):
