@@ -70,8 +70,8 @@ class FileSearchEngine(QMainWindow):
         for i in result:
             self.tree_widget.add_directory(i['path'],self.tree_widget.invisibleRootItem())
             if i != None:
-                saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=(os.path.getmtime(i['path'])), 
-                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=str(date.today()), fileSize=str(round(os.path.getsize(i["path"])/ 1024, 3)))
+                saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=os.path.getmtime(i['path']), 
+                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=time.time(), fileSize=os.path.getsize(i["path"]))
             # print('i been ran')
     
     def isSearching(self):
