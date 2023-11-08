@@ -7,6 +7,7 @@ then adds a export function to export the search history as a CSV file.
 Created by Korn Visaltanachoti (Bank), 14 October 2023
 '''
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from qtpy.QtCore import Qt
 import csv
 from tkinter import filedialog
 from ..history.csv_exporter import exportAsCSV
@@ -61,6 +62,7 @@ class SearchHistoryTable:
         for r in range(row):
             for c in range(col):
                 item = QTableWidgetItem(searchHistoryData[r][c])
+                item.setFlags(item.flags() ^ Qt.ItemIsEditable)
                 self.tableWidget.setItem(r, c, item)
 
         # Resize columns and rows to fit the content
