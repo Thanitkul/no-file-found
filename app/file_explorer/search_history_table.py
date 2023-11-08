@@ -44,27 +44,35 @@ class SearchHistoryTable:
         layout.addWidget(self.tableWidget)
         layout.addWidget(self.exportButton)
         self.searchTableWindow.setCentralWidget(centralWidget)
-        self.setupTable()
     
-    # Prepares the data for the history table
-    def setupTable(self):
+    # Updates the table with the search history data
+    def updateTable(self):
+        # Clear the existing items from the table
+        self.tableWidget.clearContents()
+
         row = len(searchHistoryData)
         col = len(tableColumnName)
         self.tableWidget.setRowCount(row)
         self.tableWidget.setColumnCount(col)
         self.tableWidget.setHorizontalHeaderLabels(tableColumnName)
-        # Adds the data to the table
+
+        # Populate the table with the updated data
         for r in range(row):
             for c in range(col):
                 item = QTableWidgetItem(searchHistoryData[r][c])
                 self.tableWidget.setItem(r, c, item)
+
+        # Resize columns and rows to fit the content
         self.tableWidget.resizeColumnsToContents()
         self.tableWidget.resizeRowsToContents()
-        
+    
     # Displays the search history table
     def historyButtonClicked(self):
+        self.updateTable()
+        print(searchHistoryData)
         self.searchTableWindow.show()
-
+        
+        
 # This function is called by file_search_engine.py to add the search history to the table
 # Arguments:
 #   fileName: the name of the file
@@ -75,4 +83,4 @@ class SearchHistoryTable:
 #   searchTerm: the search term
 #   searchDate: the date that the search was performed
 def saveHistory(fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate):
-    searchHistoryData.append([fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate])
+        searchHistoryData.append([fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate])
