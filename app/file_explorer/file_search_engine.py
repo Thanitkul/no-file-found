@@ -7,19 +7,23 @@ created by pooh, 18 oct, 2023
 '''
 
 from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,QMainWindow, QSplitter, QFileIconProvider
-from ctypes import *
 from qtpy.QtGui import QStandardItem, QIcon, QStandardItemModel
-import json
 import os
 from app.os.file_searcher import FileSearcher
 from qtpy.QtCore import Qt
-import sys
+from datetime import date
+from .search_history_table import saveHistory
 
 
 class CustomFileTreeWidget(QTreeWidget):
     def __init__(self):
         super().__init__()
         self.icon_provider = QFileIconProvider()
+
+    def add_nofilefound(self, parent):
+        item = QTreeWidgetItem(parent)
+        item.setText(0, "Nofile found")
+        item.setIcon(0, self.icon_provider.icon(QFileIconProvider.File))
 
     def add_directory(self, path, parent_item):
         if os.path.isfile(path):
@@ -53,16 +57,21 @@ class FileSearchEngine(QMainWindow):
     
     def search_folders(self):
         search_path = self.searchBar.text()
+        print(self.currentPath())
         result = FileSearcher(self.currentPath(),search_path)
         print(result)
-        if result == None:
+        if len(result) == 0:
             print("no file not found")
+            self.tree_widget.add_nofilefound(self.tree_widget.invisibleRootItem())
             return
         print("routing finish")
         self.tree_widget.clear()  # Clear previous results
         for i in result:
-            print(i)
             self.tree_widget.add_directory(i['path'],self.tree_widget.invisibleRootItem())
-
+            if i != None:
+                saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=os.path.getmtime(i["path"]), 
+                        searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=date.today(), fileSize=os.path.getsize(i["path"]))
+            # print('i been ran')
+    
     def isSearching(self):
         return self.is_searching

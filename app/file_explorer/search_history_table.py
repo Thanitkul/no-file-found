@@ -83,4 +83,5 @@ class SearchHistoryTable:
 #   searchTerm: the search term
 #   searchDate: the date that the search was performed
 def saveHistory(fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate):
-        searchHistoryData.append([fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate])
+    print(searchHistoryData)
+    searchHistoryData.append([fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate])
