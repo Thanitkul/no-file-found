@@ -6,7 +6,7 @@ then adds a export function to export the search history as a CSV file.
 
 Created by Korn Visaltanachoti (Bank), 14 October 2023
 '''
-from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget
+from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QMessageBox
 from qtpy.QtCore import Qt
 import csv
 from tkinter import filedialog
@@ -71,9 +71,13 @@ class SearchHistoryTable:
     
     # Displays the search history table
     def historyButtonClicked(self):
-        self.updateTable()
-        print(searchHistoryData)
-        self.searchTableWindow.show()
+        if not searchHistoryData:
+            # Display a warning message if the search history is empty
+            QMessageBox.warning(self.searchTableWindow, "Empty Search History", "There is no search history to display.")
+        else:
+            self.updateTable()
+            print(searchHistoryData)
+            self.searchTableWindow.show()
         
         
 # This function is called by file_search_engine.py to add the search history to the table
