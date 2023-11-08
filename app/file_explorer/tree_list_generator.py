@@ -312,6 +312,8 @@ class TreeListGenerator(QMainWindow):
         # If there's at least one tree view left, clear its highlight
         if self.treeViewList:
             self.treeViewList[-1].clearFolderHighlight()
+            self.currentPath = self.model.filePath(self.treeViewList[-1].rootIndex())
+            print(f"Current path updated to: {self.currentPath}")
 
     '''
     Remove the latest widget from the splitter
