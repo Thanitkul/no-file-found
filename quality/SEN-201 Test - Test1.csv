@@ -1,0 +1,19 @@
+Test run date: 8 Nov 2023,,Tester: Kane,
+Test Case ID,Expected Results,Observed Results,Passed? (Y/N)
+1,System displays the root directory and its subfolders,System displays drive C and its subfolders,YES
+2,Expand a new tree-list in that clicked folder,System displays subfolders of the clicked folder,YES
+3,System displays that there is no file or sub folder in an expanded tree-list,"System displays ""No files""",YES
+4,Collapse all tree-lists on the right side of the selected folder and expand a new tree-list in that clicked folder,System collapse all tree-lists on the right side of the selected folder and display a new tree-list in that clicked folder,YES
+5,Collapse the most recently expanded tree-list,System collapse the most recently expanded tree-list,YES
+6,System displays container which contain last modified date and file size next to current tree list,System dispaly last modified date and file size to the right of the block,YES
+7,System replace previous selected file's last modified date and file size with the current selected file's,System replaces previous selected file's last modified date and file size with the current selected file's,YES
+8,System collapse the container,System collapse the container when clicked on back button,YES
+9,System displays a warning message,System display bank table,NO
+10,"System lists the searches made in the 
+current session","System correctly display searches made in the 
+current session",YES
+11,System exports the search history as a CSV,CSV file is exported,YES
+12,System warns that the search key is empty,"System displays ""No File found""",NO
+13,"System lists all the files that has the name
+starting with keyword followed by another word","When search ""shrinked"", system displays two ""shrinkedAndroid.jar"" in different locations",YES
+14,System lists all the files with exact match,"When search ""shrinkedAndroid.jar"", system displays two ""shrinkedAndroid.jar"" in different locations",YES
