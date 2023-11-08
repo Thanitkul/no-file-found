@@ -65,6 +65,8 @@ class FileSearchEngine(QMainWindow):
         if len(result) == 0:
             print("no file not found")
             self.tree_widget.add_nofilefound(self.tree_widget.invisibleRootItem())
+            saveHistory(fileName="-",filePath="-",fileLastModified=0,searchStartingDirectory=self.currentPath(),
+                            searchTerm=search_path, searchDate=time.time(),fileSize=0)
             return
         print("routing finish")
         for i in result:
@@ -72,7 +74,6 @@ class FileSearchEngine(QMainWindow):
             if i != None:
                 saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=os.path.getmtime(i['path']), 
                         searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=time.time(), fileSize=os.path.getsize(i["path"]))
-            # print('i been ran')
-    
+
     def isSearching(self):
         return self.is_searching
