@@ -23,7 +23,7 @@ class CustomFileTreeWidget(QTreeWidget):
 
     def add_nofilefound(self, parent):
         item = QTreeWidgetItem(parent)
-        item.setText(0, "Nofile found")
+        item.setText(0, "No file found")
         item.setIcon(0, self.icon_provider.icon(QFileIconProvider.File))
 
     def add_directory(self, path, parent_item):
@@ -55,6 +55,17 @@ class FileSearchEngine(QMainWindow):
         self.tree_widget.setHeaderLabel("Search Results")
         self.currentPath = currentPath
         self.is_searching = False
+        # Set the stylesheet to remove border lines
+        self.tree_widget.setStyleSheet(
+            """
+            QTreeWidget {
+                border: none; /* Remove border */
+                outline: 0;   /* Remove focus outline */
+                border-radius: 2px;
+            }
+            """
+        )
+
     
     def search_folders(self):
         search_path = self.searchBar.text()
