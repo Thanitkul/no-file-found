@@ -11,7 +11,7 @@ Created by Mo, 12 October, 2023.
 # Import the required modules
 from qtpy.QtWidgets import (QMainWindow, QSplitter, QMessageBox,
                             QHBoxLayout, QPushButton, QScrollArea, QLabel)
-from qtpy.QtGui import QIcon
+from qtpy.QtGui import QFont
 from qtpy.QtCore import Qt
 import os
 
@@ -163,7 +163,7 @@ class TreeListGenerator(QMainWindow):
                 self.scrollRight()
                 return
         # If the user doesn't have permission to access the folder
-        except (FileNotFoundError, PermissionError):
+        except (Exception):
             # Remove the highlight from the folder
             self.treeViewList[-1].clearFolderHighlight()
             # Show a warning message
@@ -272,19 +272,14 @@ class TreeListGenerator(QMainWindow):
         None
     '''
     def backButton(self):
-        # Create a back button
-        self.backButton = QPushButton()
+        self.backButton = QPushButton('↩')
 
-        # Get the absolute path to the directory where your script is located
-        script_directory = os.path.dirname(os.path.abspath(__file__))
+        # Create a QFont object with a desired size
+        font = QFont()
+        font.setPointSize(20)  # You can adjust the size as needed
 
-        # Specify the relative path to your SVG image file
-        image_path = os.path.join(script_directory, "..",
-                                "assets", "icons", "back_button.svg")
-        
-        # Create a QIcon using the image_path
-        icon = QIcon(image_path)
-        self.backButton.setIcon(icon)
+        # Set the font to the button
+        self.backButton.setFont(font)
 
         # Set the size of the circular button
         self.backButton.setFixedSize(30, 30)
@@ -301,9 +296,9 @@ class TreeListGenerator(QMainWindow):
         # Connect the back button to an event handler
         self.backButton.clicked.connect(self.goBack)
 
-        self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
-        self.layout.addSpacing(10)
-        self.setLayout(self.layout)
+        # self.layout.addWidget(self.backButton, alignment=Qt.AlignLeft)
+        # self.layout.addSpacing(10)
+        # self.setLayout(self.layout)
 
     '''
     Event handler for when the back button is clicked
@@ -317,6 +312,8 @@ class TreeListGenerator(QMainWindow):
         # If there's at least one tree view left, clear its highlight
         if self.treeViewList:
             self.treeViewList[-1].clearFolderHighlight()
+            self.currentPath = self.model.filePath(self.treeViewList[-1].rootIndex())
+            print(f"Current path updated to: {self.currentPath}")
 
     '''
     Remove the latest widget from the splitter

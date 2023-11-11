@@ -33,9 +33,7 @@ class FileAttributeView(QMainWindow):
         self.attributeTable.setStyleSheet(
             """
             QTableWidget { 
-                background: #ffffff; 
-                border: 1px solid #e0e0e0; 
-                border-radius: 5px; 
+                border-radius: 2px; 
             }
             QTableWidget::item {
                 padding: 5px; /* Padding inside cells */
@@ -43,7 +41,6 @@ class FileAttributeView(QMainWindow):
             }
             QTableWidget::item:last-column { border-right: none; }
             QHeaderView::section {
-                background-color: #f0f0f0;
                 padding: 5px;
                 border-right: 1px solid #d0d0d0;
                 border-top-left-radius: 5px;
