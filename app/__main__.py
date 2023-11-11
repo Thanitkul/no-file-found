@@ -12,7 +12,7 @@ from app.file_explorer.tree_list_generator import TreeListGenerator
 from app.file_explorer.file_search_engine import FileSearchEngine
 from app.file_explorer.search_history_table import SearchHistoryTable
 
-
+# FileTreeViewer is the main application.
 class FileTreeViewer(QWidget):
     def __init__(self):
         super().__init__()

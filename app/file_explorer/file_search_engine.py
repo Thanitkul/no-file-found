@@ -15,17 +15,24 @@ from datetime import date, datetime
 import time
 from .search_history_table import saveHistory
 
-
+# CustomFileTreeWidget is a custom QTreeWidget that can add directory and file to the tree.
 class CustomFileTreeWidget(QTreeWidget):
     def __init__(self):
         super().__init__()
         self.icon_provider = QFileIconProvider()
 
+    # add_nofilefound is a function to add a "No file found" item to the tree
+    # parameters:
+    #   parent: the parent item to add the "No file found" item to
     def add_nofilefound(self, parent):
         item = QTreeWidgetItem(parent)
         item.setText(0, "No file found")
         item.setIcon(0, self.icon_provider.icon(QFileIconProvider.File))
 
+    # Add a directory to the tree
+    # parameters:
+    #   path: the path of the directory to add
+    #   parent_item: the parent item to add the directory to
     def add_directory(self, path, parent_item):
         if os.path.isfile(path):
             item_path = path
@@ -45,6 +52,7 @@ class CustomFileTreeWidget(QTreeWidget):
                 item.setIcon(0, self.icon_provider.icon(QFileIconProvider.File))
 
 
+# Class FileSearchEngine is a class that create a search bar and a tree view to display the search result.
 class FileSearchEngine(QMainWindow):
     def __init__(self, currentPath: callable):
         super().__init__()
@@ -67,9 +75,11 @@ class FileSearchEngine(QMainWindow):
         )
 
     
+    # search_folders is a function to search for files and display the result in the tree view
     def search_folders(self):
         search_path = self.searchBar.text()
         print(self.currentPath())
+        # call the search function from file_searcher.py
         result = FileSearcher(self.currentPath(),search_path)
         print(result)
         self.tree_widget.clear()  # Clear previous results
@@ -86,5 +96,6 @@ class FileSearchEngine(QMainWindow):
                 saveHistory(fileName=i['name'], filePath=i['path'], fileLastModified=os.path.getmtime(i['path']), 
                         searchStartingDirectory=self.currentPath(), searchTerm=search_path, searchDate=time.time(), fileSize=os.path.getsize(i["path"]))
 
+    # isSearching is a function to check if the search engine is currently searching or not
     def isSearching(self):
         return self.is_searching

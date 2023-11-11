@@ -90,7 +90,8 @@ class SearchHistoryTable:
 #   searchTerm: the search term
 #   searchDate: the date that the search was performed
 def saveHistory(fileName, filePath, fileSize, fileLastModified, searchStartingDirectory, searchTerm, searchDate):
-    print(fileSize, fileLastModified, searchDate)
+    
+    # Convert the file size to a human readable format
     if fileSize < 1024:
         fileSize = str(fileSize) + " B"
     elif fileSize < 1048576:
@@ -99,8 +100,6 @@ def saveHistory(fileName, filePath, fileSize, fileLastModified, searchStartingDi
         fileSize = str(round(fileSize/1048576, 2)) + " MB"
     else:
         fileSize = str(round(fileSize/1073741824, 2)) + " GB"
-    
-    # Convert fileLastModified and searchDate from unix timestamp into a date format
 
     # Convert the Unix timestamp to a datetime object
     dt_object = datetime.datetime.utcfromtimestamp(fileLastModified)

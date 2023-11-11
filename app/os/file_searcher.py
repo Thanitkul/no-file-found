@@ -29,9 +29,11 @@ from typing import List, Dict
 #   pattern: the search string
 #   is_wildcard: boolean to indicate whether the search string is wildcard or not
 def translate(pattern: str, is_wildcard: bool) -> str:
+    # If the search string is not wildcard, escape all the special characters
     if not is_wildcard:
         return re.escape(pattern)
     else:
+        # If the search string is wildcard, translate the search string to regex pattern
         res = ''
         i, n = 0, len(pattern)
         while i < n:
@@ -71,7 +73,10 @@ def translate(pattern: str, is_wildcard: bool) -> str:
 #   starting_path: the path to start searching
 #   search_string: the string to search for (can be wildcard)
 def FileSearcher(starting_path: str, search_string: str) -> List[Dict[str, str]]:
+    # Check if the search string is wildcard or not
     is_wildcard = any(char in search_string for char in '*?[]!-#')
+
+    # Translate the search string to regex pattern
     regex_pattern = translate(search_string, is_wildcard)
 
     # Compile the pattern with re.IGNORECASE for non-wildcard, without it for wildcard
@@ -80,6 +85,7 @@ def FileSearcher(starting_path: str, search_string: str) -> List[Dict[str, str]]
     else:
         regex = re.compile(f'(?i){regex_pattern}')
 
+    # matches is a list of dictionary in format [{"path": "path", "name": "name"}]
     matches = []
     for root, dirs, files in os.walk(starting_path):
         for filename in files:
