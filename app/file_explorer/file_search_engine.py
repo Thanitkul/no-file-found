@@ -6,7 +6,7 @@ This file create a qt widget and interface with the serch code interface
 created by pooh, 18 oct, 2023
 '''
 
-from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,QMainWindow, QSplitter, QFileIconProvider
+from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,QMainWindow, QSplitter, QFileIconProvider, QMessageBox
 from ctypes import *
 from qtpy.QtGui import QStandardItem, QIcon, QStandardItemModel
 import json
@@ -53,6 +53,10 @@ class FileSearchEngine(QMainWindow):
     
     def search_folders(self):
         search_path = self.searchBar.text()
+        # Check if the search bar is empty
+        if not search_path.strip():
+            QMessageBox.warning(self, "Empty Search", "Please enter text to search.")
+            return
         result = FileSearcher(self.currentPath(),search_path)
         print(result)
         if result == None:
