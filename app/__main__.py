@@ -17,7 +17,7 @@ class FileTreeViewer(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("File Tree Viewer")
+        self.setWindowTitle("No File Found")
         self.setGeometry(100, 100, 800, 600)
 
         self.treeListGenerator = TreeListGenerator()

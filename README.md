@@ -9,7 +9,10 @@
 4. Kasidis Manasurangkul (Mo)
 
 ## Project: File Finder Tool
-Run:
-```
-python -m app
-```
+A software to help users find files on their computer. Includes the following capabilities:
+- Display a tree-structured list of folders and files
+- Navigate through folders within the tree-structured list
+- Select a file to view its attributes
+- Search for files from the current directory, with and without wildcards
+- View search history within the session
+- Export the search history as a CSV
