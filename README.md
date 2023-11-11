@@ -16,3 +16,27 @@ A software to help users find files on their computer. Includes the following ca
 - Search for files from the current directory, with and without wildcards
 - View search history within the session
 - Export the search history as a CSV
+
+## For Development
+
+To create a virtual environment
+
+```
+python -m venv env
+```
+
+To activate the virtual environment
+
+```
+source env/bin/activate
+```
+
+To install required libraries
+```
+pip install -r requirement.txt
+```
+
+To run the application
+```
+python -m app
+```
