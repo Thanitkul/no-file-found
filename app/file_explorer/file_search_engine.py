@@ -6,7 +6,7 @@ This file create a qt widget and interface with the serch code interface
 created by pooh, 18 oct, 2023
 '''
 
-from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,QMainWindow, QSplitter, QFileIconProvider
+from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,QMainWindow, QSplitter, QFileIconProvider, QMessageBox
 from qtpy.QtGui import QStandardItem, QIcon, QStandardItemModel
 import os
 from app.os.file_searcher import FileSearcher
@@ -78,6 +78,10 @@ class FileSearchEngine(QMainWindow):
     # search_folders is a function to search for files and display the result in the tree view
     def search_folders(self):
         search_path = self.searchBar.text()
+        # Check if the search bar is empty
+        if not search_path.strip():
+            QMessageBox.warning(self, "Empty Search", "Please enter text to search.")
+            return
         print(self.currentPath())
         # call the search function from file_searcher.py
         result = FileSearcher(self.currentPath(),search_path)
