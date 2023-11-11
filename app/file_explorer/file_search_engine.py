@@ -6,12 +6,9 @@ This file create a qt widget and interface with the serch code interface
 created by pooh, 18 oct, 2023
 '''
 
-from qtpy.QtWidgets import QLineEdit, QWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,QMainWindow, QSplitter, QFileIconProvider, QMessageBox
-from qtpy.QtGui import QStandardItem, QIcon, QStandardItemModel
+from qtpy.QtWidgets import QLineEdit, QTreeWidget, QTreeWidgetItem, QMainWindow, QFileIconProvider, QMessageBox
 import os
 from app.os.file_searcher import FileSearcher
-from qtpy.QtCore import Qt
-from datetime import date, datetime
 import time
 from .search_history_table import saveHistory
 

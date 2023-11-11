@@ -7,7 +7,7 @@ Created by Mo, 5 November, 2023.
 '''
 
 # Import from required library
-from qtpy.QtWidgets import (QTreeView, QStyleOptionViewItem, QMessageBox, QFileSystemModel, QApplication)
+from qtpy.QtWidgets import (QTreeView, QStyleOptionViewItem, QMessageBox, QFileSystemModel)
 from qtpy.QtGui import QPalette, QColor
 from qtpy.QtCore import Qt, QModelIndex
 import os

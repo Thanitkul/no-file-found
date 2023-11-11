@@ -8,8 +8,6 @@ Created by Korn Visaltanachoti (Bank), 14 October 2023
 '''
 from qtpy.QtWidgets import QPushButton , QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, QMessageBox
 from qtpy.QtCore import Qt
-import csv
-from tkinter import filedialog
 from ..history.csv_exporter import exportAsCSV
 import datetime
 
